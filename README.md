@@ -5,7 +5,7 @@
 ```https://github.com/kottsu629/intern/commits/feature/add-readme-and-sql```
 
 ##  リポジトリURL
-https://github.com/kottsu629/intern
+- https://github.com/kottsu629/intern
 
 
 
