@@ -1,8 +1,8 @@
 ## PR/コミットURL
 
-```https://github.com/kottsu629/intern/pull/1#issue-3677831671```
+- PR : ```https://github.com/kottsu629/intern/pull/1#issue-3677831671```
 
-```https://github.com/kottsu629/intern/commits/feature/add-readme-and-sql```
+- コミット : ```https://github.com/kottsu629/intern/commits/feature/add-readme-and-sql```
 
 ##  リポジトリURL
 - https://github.com/kottsu629/intern
@@ -17,9 +17,9 @@
 docker compose up -d --build
 ```
 
-- BE:http://localhost:8080
+- BE : http://localhost:8080
 
-- FE:http://localhost:3000
+- FE : http://localhost:3000
 
 ### 環境
 
