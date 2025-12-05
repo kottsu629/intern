@@ -38,7 +38,6 @@ docker compose up -d --build
 ### 実行コマンド
 
 ```bash
-cd backend
 go test ./...
 ```
 ### テスト内容の概要
