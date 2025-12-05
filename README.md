@@ -74,10 +74,14 @@ GROUP BY c.id, c.model;
 ```
 ## EXPLAIN(2本）
 
-<img width="1890" height="1062" alt="スクリーンショット 2025-11-21 003113" src="https://github.com/user-attachments/assets/9245a5c2-eed4-4210-83ff-0bb72f0a9204" />
+- `入札一覧取得`
+  
+  <img width="1863" height="453" alt="image" src="https://github.com/user-attachments/assets/c63d43be-af62-4cd4-8a84-c934bb0afd03" />
 
-- `入札一覧取得（上）`
-- `車両ごとの最高入札額（下）`
+- `車両ごとの最高入札額`
+
+  <img width="1917" height="547" alt="image" src="https://github.com/user-attachments/assets/1f75b24a-e12a-442a-8c23-7f451326f7ca" />
+
 
 
 
