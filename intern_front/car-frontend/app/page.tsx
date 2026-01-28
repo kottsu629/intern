@@ -168,9 +168,6 @@ export default function HomePage() {
           <h1 className="text-2xl font-bold text-slate-900">
             入札対象車両一覧
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
-            バックエンド API（Go + MySQL）から取得したデータを表示しています。
-          </p>
         </header>
 
         {/* 価格帯フィルタ（アクセシビリティ対応） */}

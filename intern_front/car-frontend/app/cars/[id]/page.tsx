@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo, FormEvent } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
@@ -11,6 +11,26 @@ type Car = {
   price: number;
 };
 
+type Bid = {
+  id: number;
+  car_id: number;
+  amount: number;
+  bidder: string;
+  request_id: string;
+  created_at: string; // ISO文字列
+};
+
+const API_BASE = 'http://localhost:8080';
+
+// request_id 用の簡易UUID
+const generateRequestId = (): string => {
+  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+    return crypto.randomUUID();
+  }
+  // フォールバック（簡易）
+  return `req_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+};
+
 export default function CarDetailPage() {
   const params = useParams<{ id: string }>();
   const carId = useMemo(() => Number(params?.id ?? NaN), [params]);
@@ -19,13 +39,19 @@ export default function CarDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // ====== 入札フォーム用の状態 ======
-  const [bidderName, setBidderName] = useState('');
-  const [bidAmount, setBidAmount] = useState('');
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [submitSuccess, setSubmitSuccess] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // 入札一覧
+  const [bids, setBids] = useState<Bid[]>([]);
+  const [bidsLoading, setBidsLoading] = useState<boolean>(true);
+  const [bidsError, setBidsError] = useState<string | null>(null);
 
+  // 入札フォーム
+  const [bidder, setBidder] = useState<string>('');
+  const [amountInput, setAmountInput] = useState<string>('');
+  const [bidSubmitting, setBidSubmitting] = useState<boolean>(false);
+  const [bidSubmitError, setBidSubmitError] = useState<string | null>(null);
+  const [bidSubmitSuccess, setBidSubmitSuccess] = useState<string | null>(null);
+
+  // 車両情報の取得
   useEffect(() => {
     if (Number.isNaN(carId)) {
       setError('ID が不正です');
@@ -35,7 +61,7 @@ export default function CarDetailPage() {
 
     const fetchCar = async () => {
       try {
-        const res = await fetch('http://localhost:8080/cars');
+        const res = await fetch(`${API_BASE}/cars`);
         if (!res.ok) {
           throw new Error('API error');
         }
@@ -53,47 +79,74 @@ export default function CarDetailPage() {
     fetchCar();
   }, [carId]);
 
-  // request_id 用の簡易 UUID 生成（ブラウザが crypto.randomUUID をサポートしていればそれを使う）
-  const generateRequestId = () => {
-    if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
-      return crypto.randomUUID();
-    }
-    return 'req-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
-  };
-
-  // ====== 入札 POST 処理 ======
-  const handleSubmitBid = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    setSubmitError(null);
-    setSubmitSuccess(null);
-
-    if (!car) {
-      setSubmitError('車両情報が読み込まれていません');
+  // 入札一覧取得の共通関数
+  const fetchBids = async () => {
+    if (Number.isNaN(carId)) {
+      setBidsError('ID が不正です');
+      setBidsLoading(false);
       return;
     }
-
-    const amountNumber = Number(bidAmount);
-    if (!bidderName.trim()) {
-      setSubmitError('入札者名を入力してください');
-      return;
-    }
-    if (!bidAmount.trim() || Number.isNaN(amountNumber) || amountNumber <= 0) {
-      setSubmitError('正しい入札金額を入力してください');
-      return;
-    }
-
-    setIsSubmitting(true);
 
     try {
-      const payload = {
-        car_id: car.id,
-        amount: amountNumber,
-        bidder: bidderName.trim(),
-        request_id: generateRequestId(),
-      };
+      setBidsLoading(true);
+      setBidsError(null);
 
-      const res = await fetch('http://localhost:8080/bids', {
+      const res = await fetch(`${API_BASE}/bids?item_id=${carId}`);
+      if (!res.ok) {
+        throw new Error('API error');
+      }
+
+      const raw = await res.json();
+      // ★万一 null が返ってきても [] に変換
+      const data: Bid[] = Array.isArray(raw) ? raw : [];
+
+      setBids(data);
+    } catch (e) {
+      console.error(e);
+      setBidsError('入札情報の取得に失敗しました（APIエラー）');
+    } finally {
+      setBidsLoading(false);
+    }
+  };
+
+  // マウント時に入札一覧取得
+  useEffect(() => {
+    fetchBids();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [carId]);
+
+  // 入札送信
+  const handleSubmitBid = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setBidSubmitError(null);
+    setBidSubmitSuccess(null);
+
+    if (Number.isNaN(carId)) {
+      setBidSubmitError('車両IDが不正です');
+      return;
+    }
+
+    const parsedAmount = Number(amountInput.replace(/,/g, '').trim());
+    if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
+      setBidSubmitError('入札額は正の数で入力してください');
+      return;
+    }
+    if (!bidder.trim()) {
+      setBidSubmitError('入札者名を入力してください');
+      return;
+    }
+
+    const payload = {
+      car_id: carId,
+      amount: parsedAmount,
+      bidder: bidder.trim(),
+      request_id: generateRequestId(),
+    };
+
+    try {
+      setBidSubmitting(true);
+
+      const res = await fetch(`${API_BASE}/bids`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -102,28 +155,27 @@ export default function CarDetailPage() {
       });
 
       if (!res.ok) {
-        // request_id が重複した場合などもここに入る
         const text = await res.text().catch(() => '');
         console.error('POST /bids error:', res.status, text);
-        setSubmitError('入札に失敗しました。時間をおいて再度お試しください。');
+        setBidSubmitError('入札の送信に失敗しました');
         return;
       }
 
-      setSubmitSuccess('入札が完了しました。');
-      // フォームの値をリセット
-      setBidAmount('');
-      // 名前はそのまま残しておく
-    } catch (err) {
-      console.error(err);
-      setSubmitError('ネットワークエラーが発生しました。');
+      setBidSubmitSuccess('入札を受け付けました');
+      setAmountInput('');
+      // bidder は続けて入札できるよう保持
+
+      // 最新の入札一覧を再取得
+      await fetchBids();
+    } catch (e) {
+      console.error(e);
+      setBidSubmitError('入札の送信中にエラーが発生しました');
     } finally {
-      setIsSubmitting(false);
+      setBidSubmitting(false);
     }
   };
 
-  // ------------------------
-  // Loading（読み上げ対応）
-  // ------------------------
+  // ------------------------ Loading ------------------------
   if (loading) {
     return (
       <main className="min-h-screen flex items-center justify-center bg-slate-50">
@@ -134,9 +186,7 @@ export default function CarDetailPage() {
     );
   }
 
-  // ------------------------
-  // Error（読み上げ強め）
-  // ------------------------
+  // ------------------------ Error ------------------------
   if (error) {
     return (
       <main className="min-h-screen flex items-center justify-center bg-slate-50">
@@ -160,9 +210,7 @@ export default function CarDetailPage() {
     );
   }
 
-  // ------------------------
-  // Not Found
-  // ------------------------
+  // ------------------------ Not Found ------------------------
   if (!car) {
     return (
       <main className="min-h-screen flex items-center justify-center bg-slate-50">
@@ -187,18 +235,16 @@ export default function CarDetailPage() {
     );
   }
 
-  // ------------------------
-  // 正常表示（入札フォーム付き）
-  // ------------------------
+  // ------------------------ 正常表示 ------------------------
   return (
     <main className="min-h-screen flex items-center justify-center bg-slate-50">
-      <div className="bg-white shadow-lg rounded-xl px-8 py-6 max-w-xl w-full border border-slate-100">
+      <div className="bg-white shadow-lg rounded-xl px-8 py-6 max-w-3xl w-full border border-slate-100">
         <h1 className="text-2xl font-bold mb-6" tabIndex={0}>
           車両詳細
         </h1>
 
         {/* 車両情報 */}
-        <dl className="space-y-4 mb-8">
+        <dl className="space-y-4">
           <div className="flex justify-between">
             <dt className="text-slate-500">ID</dt>
             <dd className="font-semibold">{car.id}</dd>
@@ -223,78 +269,129 @@ export default function CarDetailPage() {
         </dl>
 
         {/* 入札フォーム */}
-        <section aria-label="この車への入札フォーム" className="mb-8">
-          <h2 className="text-lg font-semibold mb-3">この車に入札する</h2>
+        <section className="mt-8 border border-slate-200 rounded-lg p-4">
+          <h2 className="text-xl font-semibold mb-3">この車に入札する</h2>
 
           <form onSubmit={handleSubmitBid} className="space-y-4">
-            <div>
-              <label
-                htmlFor="bidder-name"
-                className="block text-sm font-medium text-slate-700 mb-1"
-              >
+            <div className="flex flex-col gap-1">
+              <label htmlFor="bidder" className="text-sm text-slate-700">
                 入札者名
               </label>
               <input
-                id="bidder-name"
+                id="bidder"
                 type="text"
-                value={bidderName}
-                onChange={(e) => setBidderName(e.target.value)}
-                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                value={bidder}
+                onChange={(e) => setBidder(e.target.value)}
+                className="rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="例）山田太郎"
-                required
               />
             </div>
 
-            <div>
-              <label
-                htmlFor="bid-amount"
-                className="block text-sm font-medium text-slate-700 mb-1"
-              >
-                入札金額（円）
+            <div className="flex flex-col gap-1">
+              <label htmlFor="amount" className="text-sm text-slate-700">
+                入札額（円）
               </label>
               <input
-                id="bid-amount"
-                type="number"
-                min={1}
-                step={1}
-                value={bidAmount}
-                onChange={(e) => setBidAmount(e.target.value)}
-                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="例）1500000"
-                required
+                id="amount"
+                type="text"
+                value={amountInput}
+                onChange={(e) => setAmountInput(e.target.value)}
+                className="rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="例）1,500,000"
               />
+              <p className="text-xs text-slate-400">
+                カンマ付きの数値でも入力できます（1,500,000 など）。
+              </p>
             </div>
 
-            {submitError && (
-              <p
-                className="text-sm text-red-600"
-                aria-live="assertive"
-              >
-                {submitError}
+            {bidSubmitError && (
+              <p className="text-sm text-red-600" aria-live="assertive">
+                {bidSubmitError}
               </p>
             )}
 
-            {submitSuccess && (
-              <p
-                className="text-sm text-emerald-600"
-                aria-live="polite"
-              >
-                {submitSuccess}
+            {bidSubmitSuccess && (
+              <p className="text-sm text-emerald-600" aria-live="polite">
+                {bidSubmitSuccess}
               </p>
             )}
 
             <button
               type="submit"
-              disabled={isSubmitting}
-              className="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              aria-label="この車両に入札する"
+              disabled={bidSubmitting}
+              className="inline-flex items-center px-4 py-2 rounded-md bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
             >
-              {isSubmitting ? '送信中...' : '入札を送信'}
+              {bidSubmitting ? '送信中...' : '入札を送信'}
             </button>
           </form>
         </section>
 
-        <div className="mt-4 text-right">
+        {/* 入札一覧 */}
+        <section className="mt-8">
+          <h2 className="text-xl font-semibold mb-3">入札一覧</h2>
+
+          {bidsLoading && (
+            <p className="text-slate-600 text-sm" aria-live="polite">
+              入札情報を読み込み中です…
+            </p>
+          )}
+
+          {bidsError && (
+            <p className="text-red-600 text-sm" aria-live="assertive">
+              {bidsError}
+            </p>
+          )}
+
+          {!bidsLoading && !bidsError && bids.length === 0 && (
+            <p className="text-slate-600 text-sm">
+              この車両への入札はまだありません。
+            </p>
+          )}
+
+          {!bidsLoading && !bidsError && bids.length > 0 && (
+            <div className="border border-slate-200 rounded-lg overflow-hidden">
+              <table className="min-w-full table-auto text-sm">
+                <thead className="bg-slate-100">
+                  <tr>
+                    <th className="px-3 py-2 text-left text-slate-600">
+                      入札ID
+                    </th>
+                    <th className="px-3 py-2 text-left text-slate-600">
+                      入札額
+                    </th>
+                    <th className="px-3 py-2 text-left text-slate-600">
+                      入札者
+                    </th>
+                    <th className="px-3 py-2 text-left text-slate-600">
+                      入札時刻
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bids.map((bid, index) => (
+                    <tr
+                      key={bid.id}
+                      className={
+                        index % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'
+                      }
+                    >
+                      <td className="px-3 py-2">{bid.id}</td>
+                      <td className="px-3 py-2">
+                        {bid.amount.toLocaleString()} 円
+                      </td>
+                      <td className="px-3 py-2">{bid.bidder}</td>
+                      <td className="px-3 py-2">
+                        {new Date(bid.created_at).toLocaleString('ja-JP')}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+
+        <div className="mt-8 text-right">
           <Link
             href="/"
             aria-label="車両一覧ページに戻る"

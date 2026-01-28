@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS bids (
   UNIQUE KEY uk_request_id (request_id)
 );
 
--- 最低限のインデックス例（要件に合わせて1つは必須）
+-- インデックス例
 CREATE INDEX idx_cars_price ON cars(price);
 CREATE INDEX idx_bids_car_created ON bids(car_id, created_at);
 

@@ -1,9 +1,17 @@
 
 ## PR/コミットURL
 
-```https://github.com/kottsu629/intern/pull/1#issue-3677831671```
+- PR : ```https://github.com/kottsu629/intern/pull/1#issue-3677831671```
+
+- コミット : ```https://github.com/kottsu629/intern/commits/feature/add-readme-and-sql```
+
+##  リポジトリURL
+- https://github.com/kottsu629/intern
 
 
+## デモ動画
+
+- https://github.com/kottsu629/intern/tree/main/demo
 
 ## 起動方法
 
@@ -11,9 +19,9 @@
 docker compose up -d --build
 ```
 
-- BE:http://localhost:8080
+- BE : http://localhost:8080
 
-- FE:http://localhost:3000
+- FE : http://localhost:3000
 
 ### 環境
 
@@ -30,7 +38,6 @@ docker compose up -d --build
 ### 実行コマンド
 
 ```bash
-cd backend
 go test ./...
 ```
 ### テスト内容の概要
@@ -67,10 +74,14 @@ GROUP BY c.id, c.model;
 ```
 ## EXPLAIN(2本）
 
-<img width="1890" height="1062" alt="スクリーンショット 2025-11-21 003113" src="https://github.com/user-attachments/assets/9245a5c2-eed4-4210-83ff-0bb72f0a9204" />
+- `入札一覧取得`
+  
+  <img width="1863" height="453" alt="image" src="https://github.com/user-attachments/assets/c63d43be-af62-4cd4-8a84-c934bb0afd03" />
 
-- `入札一覧取得（上）`
-- `車両ごとの最高入札額（下）`
+- `車両ごとの最高入札額`
+
+  <img width="1917" height="547" alt="image" src="https://github.com/user-attachments/assets/1f75b24a-e12a-442a-8c23-7f451326f7ca" />
+
 
 
 
@@ -112,9 +123,53 @@ CREATE TABLE IF NOT EXISTS bids (
 ## SSR / CSR の選択
 
 Client Side Rendering（CSR）を採用。
-車両一覧・詳細は SEO を特に必要としておらず、価格フィルタやページネーションなどクライアント側での状態更新が中心のため、API(Go) と連携するシンプルな SPA 構成にすることで実装・デバッグコストを下げた。
+車両一覧・詳細は SEO を特に必要としておらず、価格フィルタやページネーションなどクライアント側での状態更新が中心のため、API(Go) と連携するシンプルであるCSRを採用した。
+
+## AI利用メモ
+
+### どんな質問をしたか
+
+- Git の初期設定（git init、コミット、push など）のやり方を質問した
+
+- feature ブランチの作り方と PR 作成の流れを質問した
+
+- コンフリクトが出たときにどう対処すればいいか質問した
+
+- 次に何をすればよいか分からない時に、手順を細かく質問した
+
+- Next.js と TypeScript の違い・関係性を質問した
+
+- inter_front フォルダを GitHub に反映させる方法を質問した
+
+- Docker や backend の構成が合っているか確認のために質問した
+
+- コードの説明
 
 
+### 採用したもの
+
+- Git コマンドの手順（ブランチ作成 → コミット → push の流れ）
+
+- PR 作成の方法（Compare & pull request の場所など）
+
+- inter_front を GitHub に載せるための作業手順
+
+- コンフリクト画面の意味・どれを「Accept」すれば良いかという説明
+
+- README に書く内容の構成（PR URL、起動方法 など）
+
+- コードの説明
+
+### 不採用にしたもの
+
+- 完全に AI が作ったコード
+
+- 一部の高度な Git 操作の説明
+
+
+### 懸念点（AIを使ったことで気をつけたこと）
+
+- AIの説明通りにやっても実際の GitHub 画面と違うことがあったので、自分で画面を確認しながら作業した
 
 
 
