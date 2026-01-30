@@ -1,0 +1,26 @@
+[33mab9cd37[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/add-readme-and-sql[m[33m)[m HEAD@{2026-01-30 17:43:24 +0900}: checkout: moving from main to feature/add-readme-and-sql
+[33mf965702[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{2026-01-30 17:41:50 +0900}: pull origin main: Fast-forward
+[33m18a4a99[m HEAD@{2026-01-30 17:41:24 +0900}: reset: moving to HEAD
+[33m18a4a99[m HEAD@{2026-01-30 17:29:57 +0900}: checkout: moving from main to main
+[33m18a4a99[m HEAD@{2025-12-10 18:59:37 +0900}: pull origin main: Fast-forward
+[33m9f5d12d[m HEAD@{2025-12-05 20:12:12 +0900}: pull origin main: Merge made by the 'ort' strategy.
+[33md9ca776[m HEAD@{2025-12-05 20:07:58 +0900}: commit: Add demo video folder
+[33m4aef268[m HEAD@{2025-12-05 20:04:09 +0900}: commit: Add demo video folder
+[33m93b6abd[m HEAD@{2025-12-01 23:19:00 +0900}: checkout: moving from main to main
+[33m93b6abd[m HEAD@{2025-12-01 23:14:03 +0900}: pull --rebase origin main (finish): returning to refs/heads/main
+[33m93b6abd[m HEAD@{2025-12-01 23:14:03 +0900}: pull --rebase origin main (pick): fix: update main.go
+[33m58784c9[m HEAD@{2025-12-01 23:14:02 +0900}: pull --rebase origin main (pick): feat: add frontend app
+[33m9fc1a6f[m HEAD@{2025-12-01 23:14:02 +0900}: pull --rebase origin main (start): checkout 9fc1a6f0cd1f413b8df7cb00bbe664c407b423d5
+[33m66f8373[m HEAD@{2025-12-01 23:12:59 +0900}: commit: fix: update main.go
+[33m1738993[m HEAD@{2025-12-01 23:07:13 +0900}: commit: feat: add frontend app
+[33m9fb3579[m HEAD@{2025-12-01 23:05:26 +0900}: checkout: moving from feature/add-readme-and-sql to main
+[33mab9cd37[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/add-readme-and-sql[m[33m)[m HEAD@{2025-12-01 23:05:10 +0900}: commit: docs: update README before switching branch
+[33mf2115a5[m[33m ([m[1;31morigin/feature/add-readme-and-sql[m[33m)[m HEAD@{2025-11-30 23:22:49 +0900}: commit: docs: add README
+[33m9fb3579[m HEAD@{2025-11-30 23:20:21 +0900}: checkout: moving from main to feature/add-readme-and-sql
+[33m9fb3579[m HEAD@{2025-11-30 23:09:32 +0900}: reset: moving to 9fb3579
+[33m9fb3579[m HEAD@{2025-11-30 23:08:36 +0900}: checkout: moving from main to main
+[33m9fb3579[m HEAD@{2025-11-30 23:03:52 +0900}: reset: moving to 9fb3579
+[33m9fb3579[m HEAD@{2025-11-30 23:02:58 +0900}: checkout: moving from feature/add-readme-and-sql to main
+[33m9fb3579[m HEAD@{2025-11-30 22:34:57 +0900}: checkout: moving from main to feature/add-readme-and-sql
+[33m9fb3579[m HEAD@{2025-11-30 22:25:52 +0900}: Branch: renamed refs/heads/main to refs/heads/main
+[33m9fb3579[m HEAD@{2025-11-30 22:24:54 +0900}: commit (initial): chore: initial commit
