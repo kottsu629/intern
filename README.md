@@ -15,13 +15,32 @@
 
 ## 起動方法
 
-```bash
-docker compose up -d --build
-```
+### バックエンド
+- docker起動（MySQL+Go）
+  
+```docker compose up -d ```
 
-- BE : http://localhost:8080
+- 以下にアクセスし、レスポンスが返れば起動成功です
 
-- FE : http://localhost:3000
+```http://localhost:8080```
+
+### フロントエンド
+
+- 環境変数
+
+```NEXT_PUBLIC_API_BASE_URL=http://localhost:8080```
+
+- インストール
+
+```npm install```
+
+- 起動
+
+```npm run dev```
+
+- 以下にアクセスしてレスポンスが返れば起動成功
+
+```http://localhost:3000```
 
 ### 環境
 
