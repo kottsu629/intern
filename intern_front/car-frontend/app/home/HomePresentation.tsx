@@ -1,3 +1,4 @@
+// HomePresentation.tsx
 import { useState } from 'react';
 
 import type { Car } from './types';
@@ -7,6 +8,7 @@ import { QuickBidForm } from './components/QuickBidForm';
 import { FilterBar } from './components/FilterBar';
 import { CarTable } from './components/CarTable';
 import { Pagination } from './components/Pagination';
+import { SortBar, type SortKey, type SortOrder } from './components/SortBar';
 
 export function HomePresentation(props: {
   loading: boolean;
@@ -50,6 +52,12 @@ export function HomePresentation(props: {
   onChangeBidBidder: (v: string) => void;
   onChangeBidAmount: (v: string) => void;
   onSubmitBid: () => void;
+
+  // sort
+  sortKey: SortKey;
+  sortOrder: SortOrder;
+  onChangeSortKey: (k: SortKey) => void;
+  onToggleSortOrder: () => void;
 }) {
   const {
     loading,
@@ -92,6 +100,11 @@ export function HomePresentation(props: {
     onChangeBidBidder,
     onChangeBidAmount,
     onSubmitBid,
+
+    sortKey,
+    sortOrder,
+    onChangeSortKey,
+    onToggleSortOrder,
   } = props;
 
   const [isCarModalOpen, setIsCarModalOpen] = useState(false);
@@ -105,10 +118,18 @@ export function HomePresentation(props: {
             <h1 className="text-2xl font-bold text-slate-900">入札対象車両一覧</h1>
 
             <div className="flex items-center gap-2">
+              {/* 小型ソートUI（右上） */}
+              <SortBar
+                sortKey={sortKey}
+                sortOrder={sortOrder}
+                onChangeSortKey={onChangeSortKey}
+                onToggleSortOrder={onToggleSortOrder}
+              />
+
               <button
                 type="button"
                 onClick={() => setIsCarModalOpen(true)}
-                className="inline-flex items-center px-4 py-2 rounded-md bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700"
+                className="inline-flex items-center px-3 py-2 rounded-md bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700"
               >
                 車両登録
               </button>
@@ -116,7 +137,7 @@ export function HomePresentation(props: {
               <button
                 type="button"
                 onClick={() => setIsBidModalOpen(true)}
-                className="inline-flex items-center px-4 py-2 rounded-md border border-slate-300 bg-white text-slate-800 text-sm font-medium hover:bg-slate-100"
+                className="inline-flex items-center px-3 py-2 rounded-md border border-slate-300 bg-white text-slate-800 text-sm font-medium hover:bg-slate-100"
               >
                 クイック入札
               </button>
