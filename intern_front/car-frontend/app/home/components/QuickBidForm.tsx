@@ -29,8 +29,6 @@ export function QuickBidForm(props: {
 
   return (
     <section className="mb-6 bg-white rounded-xl shadow-sm border border-slate-200 p-4">
-      <h2 className="text-lg font-semibold mb-3">クイック入札（一覧画面から）</h2>
-
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div className="flex flex-col gap-1">
           <label className="text-sm text-slate-700">対象車両</label>

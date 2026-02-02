@@ -1,35 +1,22 @@
 // HomeContainer.tsx
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import type { BidCreateRequest, Car, CarCreateRequest } from './types';
-import { API_BASE, fetchJson } from './lib/api';
+import { useState } from 'react';
+import type { BidCreateRequest, CarCreateRequest } from './types';
 import { generateRequestId } from './lib/requestId';
 import { HomePresentation } from './HomePresentation';
 import type { SortKey, SortOrder } from './components/SortBar';
 
-function parsePrice(value: string): number | null {
-  const trimmed = value.trim();
-  if (trimmed === '') return null;
-  const cleaned = trimmed.replace(/,/g, '');
-  const n = Number(cleaned);
-  if (Number.isNaN(n)) return null;
-  return n;
-}
+import { formatPrice, parsePositiveNumber, toNumberOrZero } from './libCars/price';
+import { createBid, createCar } from './libCars/carsAPI';
+import { useCars } from './hooks/useCars';
+import { useCarsView } from './hooks/useCarsView';
 
-function toNumberOrZero(value: string): number {
-  const n = parsePrice(value);
-  return n === null ? 0 : n;
-}
-
-function formatPrice(n: number): string {
-  return n.toLocaleString('ja-JP');
-}
+const ITEMS_PER_PAGE = 10;
 
 export function HomeContainer() {
-  const [cars, setCars] = useState<Car[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // cars fetch state
+  const { cars, loading, error, refetch } = useCars();
 
   // filter ui state
   const [minInput, setMinInput] = useState('');
@@ -43,7 +30,6 @@ export function HomeContainer() {
 
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
 
   // create car
   const [carModel, setCarModel] = useState('');
@@ -60,26 +46,6 @@ export function HomeContainer() {
   const [bidSubmitting, setBidSubmitting] = useState(false);
   const [bidError, setBidError] = useState<string | null>(null);
   const [bidSuccess, setBidSuccess] = useState<string | null>(null);
-
-  async function refetchCars() {
-    const data = await fetchJson<Car[]>(`${API_BASE}/cars`);
-    setCars(data);
-  }
-
-  useEffect(() => {
-    const run = async () => {
-      try {
-        setError(null);
-        await refetchCars();
-      } catch (e) {
-        console.error(e);
-        setError('データ取得に失敗しました（APIエラー）');
-      } finally {
-        setLoading(false);
-      }
-    };
-    run();
-  }, []);
 
   // filter behavior
   const increaseMin = () => setMinInput((prev) => formatPrice(toNumberOrZero(prev) + 100000));
@@ -101,35 +67,17 @@ export function HomeContainer() {
     setMaxPrice('');
   };
 
-  // client-side filtering + sorting
-  const filteredCars = useMemo(() => {
-    const min = parsePrice(minPrice);
-    const max = parsePrice(maxPrice);
-
-    const filtered = cars.filter((car) => {
-      if (min !== null && car.price < min) return false;
-      if (max !== null && car.price > max) return false;
-      return true;
-    });
-
-    const dir = sortOrder === 'asc' ? 1 : -1;
-
-    return [...filtered].sort((a, b) => {
-      if (sortKey === 'price') {
-        if (a.price !== b.price) return (a.price - b.price) * dir;
-        return (a.id - b.id) * dir; // tie-break
-      }
-      return (a.id - b.id) * dir;
-    });
-  }, [cars, minPrice, maxPrice, sortKey, sortOrder]);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [minPrice, maxPrice, sortKey, sortOrder]);
-
-  const totalPages = Math.max(1, Math.ceil(filteredCars.length / itemsPerPage));
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const pagedCars = filteredCars.slice(startIndex, startIndex + itemsPerPage);
+  // derived view data (filter + sort + paging)
+  const { pagedCars, totalPages } = useCarsView({
+    cars,
+    minPrice,
+    maxPrice,
+    sortKey,
+    sortOrder,
+    currentPage,
+    itemsPerPage: ITEMS_PER_PAGE,
+    onResetPage: () => setCurrentPage(1),
+  });
 
   // submit car
   const submitCar = async () => {
@@ -138,7 +86,7 @@ export function HomeContainer() {
 
     const model = carModel.trim();
     const yearN = Number(carYear.trim());
-    const priceN = Number(carPrice.trim().replace(/,/g, ''));
+    const priceN = parsePositiveNumber(carPrice);
 
     if (!model) {
       setCarError('車種(model)を入力してください');
@@ -148,7 +96,7 @@ export function HomeContainer() {
       setCarError('年式(year)は正の整数で入力してください');
       return;
     }
-    if (!Number.isFinite(priceN) || priceN <= 0) {
+    if (priceN === null) {
       setCarError('価格(price)は正の数で入力してください');
       return;
     }
@@ -157,17 +105,13 @@ export function HomeContainer() {
 
     try {
       setCarSubmitting(true);
-      await fetchJson(`${API_BASE}/cars`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      await createCar(payload);
 
       setCarSuccess('車両を登録しました');
       setCarModel('');
       setCarYear('');
       setCarPrice('');
-      await refetchCars();
+      await refetch();
     } catch (e) {
       console.error(e);
       setCarError('車両登録に失敗しました（APIエラー）');
@@ -183,7 +127,7 @@ export function HomeContainer() {
 
     const carIdN = Number(bidCarId);
     const bidder = bidBidder.trim();
-    const amountN = Number(bidAmount.trim().replace(/,/g, ''));
+    const amountN = parsePositiveNumber(bidAmount);
 
     if (!Number.isFinite(carIdN) || carIdN <= 0) {
       setBidError('対象車両を選択してください');
@@ -193,7 +137,7 @@ export function HomeContainer() {
       setBidError('入札者名を入力してください');
       return;
     }
-    if (!Number.isFinite(amountN) || amountN <= 0) {
+    if (amountN === null) {
       setBidError('入札額は正の数で入力してください');
       return;
     }
@@ -207,15 +151,8 @@ export function HomeContainer() {
 
     try {
       setBidSubmitting(true);
-      const res = await fetch(`${API_BASE}/bids`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        const text = await res.text().catch(() => '');
-        throw new Error(`POST /bids failed: ${res.status} ${text}`);
-      }
+      await createBid(payload);
+
       setBidSuccess('入札を送信しました');
       setBidAmount('');
     } catch (e) {
