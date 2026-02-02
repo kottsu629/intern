@@ -10,8 +10,41 @@
 
 ## デモ動画
 
-- https://github.com/kottsu629/intern/tree/main/demo
+- BE
 
+
+
+
+  DockerでMySQLとGoを起動
+
+　　```https://drive.google.com/file/d/1zr7NQMrQi9e2w7uz22lJN_156_vp1Pim/view?usp=drive_link```
+
+- FE
+
+  FEの開発サーバーを起動
+
+  ```https://drive.google.com/file/d/1BKASJe1PGRkaHEbiuaqk0YQ7ERya5e_M/view?usp=drive_link```
+
+- エラー表示
+
+  Dockerコンテナを停止させたときのFEのAPI通信エラー
+
+  ```https://drive.google.com/file/d/1ubr1EF6rON524wiKP2BWB29eXziK2P5B/view?usp=drive_link```
+
+- 機能一覧
+
+  入札処理、ページネーション制御、条件指定によるデータフィルタリング処理
+
+  ```https://drive.google.com/file/d/1_J4Tl-6Tp-T3mtd6UIjviArcC5jCFO3l/view?usp=drive_link```
+
+- 機能一覧（追加分）
+
+  クイック入札、車両登録、ソート機能の追加
+
+  ```https://drive.google.com/file/d/1RjK9VbQ3Rb8LW-rCzZitOH7IXfwTvhT0/view?usp=drive_link```
+
+
+  
 
 ## 起動方法
 
