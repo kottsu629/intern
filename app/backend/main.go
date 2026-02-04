@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -18,8 +19,25 @@ func main() {
 	}
 	defer db.Close()
 
-	if err := db.Ping(); err != nil {
-		log.Fatalf("DBに接続できません: %v", err)
+	// DBが起動完了するまで待つ（最大60秒）
+	fmt.Println("DB接続待ち...")
+	const (
+		maxRetries = 30
+		interval   = 2 * time.Second
+	)
+	var pingErr error
+	for i := 1; i <= maxRetries; i++ {
+		if err := db.Ping(); err == nil {
+			pingErr = nil
+			break
+		} else {
+			pingErr = err
+			log.Printf("DBに接続できません (%d/%d): %v", i, maxRetries, err)
+			time.Sleep(interval)
+		}
+	}
+	if pingErr != nil {
+		log.Fatalf("DBに接続できません（リトライ終了）: %v", pingErr)
 	}
 	fmt.Println("DB接続成功！")
 
