@@ -1,4 +1,4 @@
-// components/SortBar.tsx
+
 
 export type SortKey = 'id' | 'price';
 export type SortOrder = 'asc' | 'desc';
