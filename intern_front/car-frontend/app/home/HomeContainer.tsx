@@ -1,3 +1,4 @@
+// HomeContainer.tsx
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
@@ -5,8 +6,7 @@ import type { BidCreateRequest, Car, CarCreateRequest } from './types';
 import { API_BASE, fetchJson } from './lib/api';
 import { generateRequestId } from './lib/requestId';
 import { HomePresentation } from './HomePresentation';
-
-const itemsPerPage = 2;
+import type { SortKey, SortOrder } from './components/SortBar';
 
 function parsePrice(value: string): number | null {
   const trimmed = value.trim();
@@ -37,8 +37,13 @@ export function HomeContainer() {
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
 
+  // sort ui state
+  const [sortKey, setSortKey] = useState<SortKey>('id');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
+
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   // create car
   const [carModel, setCarModel] = useState('');
@@ -78,9 +83,11 @@ export function HomeContainer() {
 
   // filter behavior
   const increaseMin = () => setMinInput((prev) => formatPrice(toNumberOrZero(prev) + 100000));
-  const decreaseMin = () => setMinInput((prev) => formatPrice(Math.max(0, toNumberOrZero(prev) - 100000)));
+  const decreaseMin = () =>
+    setMinInput((prev) => formatPrice(Math.max(0, toNumberOrZero(prev) - 100000)));
   const increaseMax = () => setMaxInput((prev) => formatPrice(toNumberOrZero(prev) + 100000));
-  const decreaseMax = () => setMaxInput((prev) => formatPrice(Math.max(0, toNumberOrZero(prev) - 100000)));
+  const decreaseMax = () =>
+    setMaxInput((prev) => formatPrice(Math.max(0, toNumberOrZero(prev) - 100000)));
 
   const handleSearch = () => {
     setMinPrice(minInput);
@@ -94,8 +101,8 @@ export function HomeContainer() {
     setMaxPrice('');
   };
 
-  // client-side filtering
-  const filteredAndSortedCars = useMemo(() => {
+  // client-side filtering + sorting
+  const filteredCars = useMemo(() => {
     const min = parsePrice(minPrice);
     const max = parsePrice(maxPrice);
 
@@ -105,16 +112,24 @@ export function HomeContainer() {
       return true;
     });
 
-    return [...filtered].sort((a, b) => a.id - b.id);
-  }, [cars, minPrice, maxPrice]);
+    const dir = sortOrder === 'asc' ? 1 : -1;
+
+    return [...filtered].sort((a, b) => {
+      if (sortKey === 'price') {
+        if (a.price !== b.price) return (a.price - b.price) * dir;
+        return (a.id - b.id) * dir; // tie-break
+      }
+      return (a.id - b.id) * dir;
+    });
+  }, [cars, minPrice, maxPrice, sortKey, sortOrder]);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [minPrice, maxPrice]);
+  }, [minPrice, maxPrice, sortKey, sortOrder]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredAndSortedCars.length / itemsPerPage));
+  const totalPages = Math.max(1, Math.ceil(filteredCars.length / itemsPerPage));
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const pagedCars = filteredAndSortedCars.slice(startIndex, startIndex + itemsPerPage);
+  const pagedCars = filteredCars.slice(startIndex, startIndex + itemsPerPage);
 
   // submit car
   const submitCar = async () => {
@@ -161,7 +176,7 @@ export function HomeContainer() {
     }
   };
 
-  // submit bid (text response)
+  // submit bid
   const submitBid = async () => {
     setBidError(null);
     setBidSuccess(null);
@@ -250,6 +265,10 @@ export function HomeContainer() {
       onChangeBidBidder={setBidBidder}
       onChangeBidAmount={setBidAmount}
       onSubmitBid={submitBid}
+      sortKey={sortKey}
+      sortOrder={sortOrder}
+      onChangeSortKey={setSortKey}
+      onToggleSortOrder={() => setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'))}
     />
   );
 }
