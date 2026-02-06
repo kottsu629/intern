@@ -1,8 +1,8 @@
 ## PR/コミットURL
 
-- PR : ```https://github.com/kottsu629/intern/pull/1#issue-3677831671```
+- PR : https://github.com/kottsu629/intern/pull/1#issue-3677831671
 
-- コミット : ```https://github.com/kottsu629/intern/commits/feature/add-readme-and-sql```
+- コミット : https://github.com/kottsu629/intern/commits/feature/add-readme-and-sql
 
 ##  リポジトリURL
 - https://github.com/kottsu629/intern
@@ -17,31 +17,31 @@
 
   DockerでMySQLとGoを起動
 
-　　```https://drive.google.com/file/d/1zr7NQMrQi9e2w7uz22lJN_156_vp1Pim/view?usp=drive_link```
+　　https://drive.google.com/file/d/1zr7NQMrQi9e2w7uz22lJN_156_vp1Pim/view?usp=drive_link
 
 - FE
 
   FEの開発サーバーを起動
 
-  ```https://drive.google.com/file/d/1BKASJe1PGRkaHEbiuaqk0YQ7ERya5e_M/view?usp=drive_link```
+  https://drive.google.com/file/d/1BKASJe1PGRkaHEbiuaqk0YQ7ERya5e_M/view?usp=drive_link
 
 - エラー表示
 
   Dockerコンテナを停止させたときのFEのAPI通信エラー
 
-  ```https://drive.google.com/file/d/1ubr1EF6rON524wiKP2BWB29eXziK2P5B/view?usp=drive_link```
+  https://drive.google.com/file/d/1ubr1EF6rON524wiKP2BWB29eXziK2P5B/view?usp=drive_link
 
 - 機能一覧
 
   入札処理、ページネーション制御、条件指定によるデータフィルタリング処理
 
-  ```https://drive.google.com/file/d/1_J4Tl-6Tp-T3mtd6UIjviArcC5jCFO3l/view?usp=drive_link```
+  https://drive.google.com/file/d/1_J4Tl-6Tp-T3mtd6UIjviArcC5jCFO3l/view?usp=drive_link
 
 - 機能一覧（追加分）
 
   クイック入札、車両登録、ソート機能の追加
 
-  ```https://drive.google.com/file/d/1RjK9VbQ3Rb8LW-rCzZitOH7IXfwTvhT0/view?usp=drive_link```
+  https://drive.google.com/file/d/1RjK9VbQ3Rb8LW-rCzZitOH7IXfwTvhT0/view?usp=drive_link
 
 
   
@@ -51,29 +51,31 @@
 ### バックエンド
 - docker起動（MySQL+Go）
   
-```docker compose up -d ```
+docker compose up -d 
 
-- 以下にアクセスし、レスポンスが返れば起動成功です
+- 以下にアクセスし、レスポンス(OK)が返れば起動成功です
 
-```http://localhost:8080```
+http://localhost:8080
 
 ### フロントエンド
 
 - 環境変数
 
-```NEXT_PUBLIC_API_BASE_URL=http://localhost:8080```
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8080
 
 - インストール
 
-```npm install```
+npm install
 
 - 起動
 
-```npm run dev```
+intern_task/intern_front/car-frontend ディレクトリに移動して以下を実行する
+
+npm run dev
 
 - 以下にアクセスしてレスポンスが返れば起動成功
 
-```http://localhost:3000```
+http://localhost:3000
 
 ### 環境
 
