@@ -5,7 +5,6 @@ import type { Car, CarCreateRequest } from './types';
 import { API_BASE, fetchJson } from './lib/api';
 import { HomePresentation } from './HomePresentation';
 
-const itemsPerPage = 2;
 
 function parsePrice(value: string): number | null {
   const trimmed = value.trim();
@@ -105,7 +104,7 @@ export function HomeContainer() {
   useEffect(() => {
     setCurrentPage(1);
   }, [minPrice, maxPrice]);
-
+  const itemsPerPage = 10;
   const totalPages = Math.max(1, Math.ceil(filteredAndSortedCars.length / itemsPerPage));
   const startIndex = (currentPage - 1) * itemsPerPage;
   const pagedCars = filteredAndSortedCars.slice(startIndex, startIndex + itemsPerPage);
