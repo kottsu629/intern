@@ -1,9 +1,9 @@
+// HomeContainer.tsx
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import type { BidCreateRequest, Car, CarCreateRequest } from './types';
+import type { Car } from './types';
 import { API_BASE, fetchJson } from './lib/api';
-import { generateRequestId } from './lib/requestId';
 import { HomePresentation } from './HomePresentation';
 
 const itemsPerPage = 2;
@@ -39,22 +39,6 @@ export function HomeContainer() {
 
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
-
-  // create car
-  const [carModel, setCarModel] = useState('');
-  const [carYear, setCarYear] = useState('');
-  const [carPrice, setCarPrice] = useState('');
-  const [carSubmitting, setCarSubmitting] = useState(false);
-  const [carError, setCarError] = useState<string | null>(null);
-  const [carSuccess, setCarSuccess] = useState<string | null>(null);
-
-  // quick bid
-  const [bidCarId, setBidCarId] = useState('');
-  const [bidBidder, setBidBidder] = useState('');
-  const [bidAmount, setBidAmount] = useState('');
-  const [bidSubmitting, setBidSubmitting] = useState(false);
-  const [bidError, setBidError] = useState<string | null>(null);
-  const [bidSuccess, setBidSuccess] = useState<string | null>(null);
 
   async function refetchCars() {
     const data = await fetchJson<Car[]>(`${API_BASE}/cars`);
@@ -116,106 +100,10 @@ export function HomeContainer() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const pagedCars = filteredAndSortedCars.slice(startIndex, startIndex + itemsPerPage);
 
-  // submit car
-  const submitCar = async () => {
-    setCarError(null);
-    setCarSuccess(null);
-
-    const model = carModel.trim();
-    const yearN = Number(carYear.trim());
-    const priceN = Number(carPrice.trim().replace(/,/g, ''));
-
-    if (!model) {
-      setCarError('車種(model)を入力してください');
-      return;
-    }
-    if (!Number.isFinite(yearN) || yearN <= 0) {
-      setCarError('年式(year)は正の整数で入力してください');
-      return;
-    }
-    if (!Number.isFinite(priceN) || priceN <= 0) {
-      setCarError('価格(price)は正の数で入力してください');
-      return;
-    }
-
-    const payload: CarCreateRequest = { model, year: yearN, price: priceN };
-
-    try {
-      setCarSubmitting(true);
-      await fetchJson(`${API_BASE}/cars`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      setCarSuccess('車両を登録しました');
-      setCarModel('');
-      setCarYear('');
-      setCarPrice('');
-      await refetchCars();
-    } catch (e) {
-      console.error(e);
-      setCarError('車両登録に失敗しました（APIエラー）');
-    } finally {
-      setCarSubmitting(false);
-    }
-  };
-
-  // submit bid (text response)
-  const submitBid = async () => {
-    setBidError(null);
-    setBidSuccess(null);
-
-    const carIdN = Number(bidCarId);
-    const bidder = bidBidder.trim();
-    const amountN = Number(bidAmount.trim().replace(/,/g, ''));
-
-    if (!Number.isFinite(carIdN) || carIdN <= 0) {
-      setBidError('対象車両を選択してください');
-      return;
-    }
-    if (!bidder) {
-      setBidError('入札者名を入力してください');
-      return;
-    }
-    if (!Number.isFinite(amountN) || amountN <= 0) {
-      setBidError('入札額は正の数で入力してください');
-      return;
-    }
-
-    const payload: BidCreateRequest = {
-      car_id: carIdN,
-      amount: amountN,
-      bidder,
-      request_id: generateRequestId(),
-    };
-
-    try {
-      setBidSubmitting(true);
-      const res = await fetch(`${API_BASE}/bids`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        const text = await res.text().catch(() => '');
-        throw new Error(`POST /bids failed: ${res.status} ${text}`);
-      }
-      setBidSuccess('入札を送信しました');
-      setBidAmount('');
-    } catch (e) {
-      console.error(e);
-      setBidError('入札の送信に失敗しました（APIエラー）');
-    } finally {
-      setBidSubmitting(false);
-    }
-  };
-
   return (
     <HomePresentation
       loading={loading}
       error={error}
-      carsForSelect={cars}
       pagedCars={pagedCars}
       totalPages={totalPages}
       currentPage={currentPage}
@@ -230,26 +118,6 @@ export function HomeContainer() {
       onSearch={handleSearch}
       onClear={handleClear}
       onGoPage={setCurrentPage}
-      carModel={carModel}
-      carYear={carYear}
-      carPrice={carPrice}
-      carSubmitting={carSubmitting}
-      carError={carError}
-      carSuccess={carSuccess}
-      onChangeCarModel={setCarModel}
-      onChangeCarYear={setCarYear}
-      onChangeCarPrice={setCarPrice}
-      onSubmitCar={submitCar}
-      bidCarId={bidCarId}
-      bidBidder={bidBidder}
-      bidAmount={bidAmount}
-      bidSubmitting={bidSubmitting}
-      bidError={bidError}
-      bidSuccess={bidSuccess}
-      onChangeBidCarId={setBidCarId}
-      onChangeBidBidder={setBidBidder}
-      onChangeBidAmount={setBidAmount}
-      onSubmitBid={submitBid}
     />
   );
 }
