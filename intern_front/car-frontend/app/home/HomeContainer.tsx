@@ -1,12 +1,10 @@
-// HomeContainer.tsx
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import type { Car } from './types';
+import type { Car, CarCreateRequest } from './types';
 import { API_BASE, fetchJson } from './lib/api';
 import { HomePresentation } from './HomePresentation';
 
-const itemsPerPage = 2;
 
 function parsePrice(value: string): number | null {
   const trimmed = value.trim();
@@ -39,6 +37,17 @@ export function HomeContainer() {
 
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
+
+  // car modal
+  const [isCarModalOpen, setIsCarModalOpen] = useState(false);
+
+  // create car
+  const [carModel, setCarModel] = useState('');
+  const [carYear, setCarYear] = useState('');
+  const [carPrice, setCarPrice] = useState('');
+  const [carSubmitting, setCarSubmitting] = useState(false);
+  const [carError, setCarError] = useState<string | null>(null);
+  const [carSuccess, setCarSuccess] = useState<string | null>(null);
 
   async function refetchCars() {
     const data = await fetchJson<Car[]>(`${API_BASE}/cars`);
@@ -95,10 +104,47 @@ export function HomeContainer() {
   useEffect(() => {
     setCurrentPage(1);
   }, [minPrice, maxPrice]);
-
+  const itemsPerPage = 10;
   const totalPages = Math.max(1, Math.ceil(filteredAndSortedCars.length / itemsPerPage));
   const startIndex = (currentPage - 1) * itemsPerPage;
   const pagedCars = filteredAndSortedCars.slice(startIndex, startIndex + itemsPerPage);
+
+  // submit car
+  const submitCar = async () => {
+    setCarError(null);
+    setCarSuccess(null);
+
+    const model = carModel.trim();
+    const yearN = Number(carYear.trim());
+    const priceN = Number(carPrice.trim().replace(/,/g, ''));
+
+    if (!model) return setCarError('車種を入力してください');
+    if (!Number.isFinite(yearN) || yearN <= 0) return setCarError('年式は正の整数で入力してください');
+    if (!Number.isFinite(priceN) || priceN <= 0) return setCarError('価格は正の数で入力してください');
+
+    const payload: CarCreateRequest = { model, year: yearN, price: priceN };
+
+    try {
+      setCarSubmitting(true);
+      await fetchJson(`${API_BASE}/cars`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      setCarSuccess('車両を登録しました');
+      setCarModel('');
+      setCarYear('');
+      setCarPrice('');
+      await refetchCars();
+      setIsCarModalOpen(false);
+    } catch (e) {
+      console.error(e);
+      setCarError('車両登録に失敗しました（APIエラー）');
+    } finally {
+      setCarSubmitting(false);
+    }
+  };
 
   return (
     <HomePresentation
@@ -118,6 +164,19 @@ export function HomeContainer() {
       onSearch={handleSearch}
       onClear={handleClear}
       onGoPage={setCurrentPage}
+      isCarModalOpen={isCarModalOpen}
+      onOpenCarModal={() => setIsCarModalOpen(true)}
+      onCloseCarModal={() => setIsCarModalOpen(false)}
+      carModel={carModel}
+      carYear={carYear}
+      carPrice={carPrice}
+      carSubmitting={carSubmitting}
+      carError={carError}
+      carSuccess={carSuccess}
+      onChangeCarModel={setCarModel}
+      onChangeCarYear={setCarYear}
+      onChangeCarPrice={setCarPrice}
+      onSubmitCar={submitCar}
     />
   );
 }
