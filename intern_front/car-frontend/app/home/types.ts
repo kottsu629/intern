@@ -5,3 +5,9 @@ export type Car = {
   year: number;
   price: number;
 };
+
+export type CarCreateRequest = {
+  model: string;
+  year: number;
+  price: number;
+};
