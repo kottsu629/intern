@@ -65,9 +65,11 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:8080
 
 - インストール
 
+intern_task/intern_front/car-frontend ディレクトリに移動して以下を実行する
+
 ```npm install```
 
-intern_task/intern_front/car-frontend ディレクトリに移動して以下を実行する
+
 
 
 - 起動
