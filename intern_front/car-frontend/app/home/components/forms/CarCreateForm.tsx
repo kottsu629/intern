@@ -29,7 +29,7 @@ export function CarCreateForm(props: {
   return (
     <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
       <div className="px-8 py-7">
-        <h3 className="text-2xl font-bold text-slate-900">車両登録（一覧画面から）</h3>
+        
 
         <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
