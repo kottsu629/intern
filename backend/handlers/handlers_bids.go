@@ -1,18 +1,22 @@
-package main
+package handlers
 
 import (
 	"encoding/json"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"app/models"
+	"app/repos"
+	"app/services"
 )
 
 type BidsHandler struct {
-	repo    *BidRepo
-	service *BidService
+	repo    *repos.BidRepo
+	service *services.BidService
 }
 
-func NewBidsHandler(repo *BidRepo, service *BidService) *BidsHandler {
+func NewBidsHandler(repo *repos.BidRepo, service *services.BidService) *BidsHandler {
 	return &BidsHandler{repo: repo, service: service}
 }
 
@@ -29,7 +33,7 @@ func (h *BidsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *BidsHandler) handleCreateBid(w http.ResponseWriter, r *http.Request) {
-	var req BidRequest
+	var req models.BidRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "invalid JSON", http.StatusBadRequest)
 		return

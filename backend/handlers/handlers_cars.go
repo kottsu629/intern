@@ -1,4 +1,4 @@
-package main
+package handlers
 
 import (
 	"context"
@@ -8,14 +8,18 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"app/models"
+	"app/repos"
+	"app/services"
 )
 
 type CarsHandler struct {
-	repo    *CarRepo
-	service *CarService
+	repo    *repos.CarRepo
+	service *services.CarService
 }
 
-func NewCarsHandler(repo *CarRepo, service *CarService) *CarsHandler {
+func NewCarsHandler(repo *repos.CarRepo, service *services.CarService) *CarsHandler {
 	return &CarsHandler{repo: repo, service: service}
 }
 
@@ -32,7 +36,7 @@ func (h *CarsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *CarsHandler) handleCreateCar(w http.ResponseWriter, r *http.Request) {
-	var req CarCreateRequest
+	var req models.CarCreateRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "invalid JSON", http.StatusBadRequest)
 		return
@@ -134,8 +138,8 @@ func (h *CarsHandler) handleListCars(w http.ResponseWriter, r *http.Request) {
 }
 
 // GET /cars/{id}
-func carDetailHandler(db *sql.DB) http.HandlerFunc {
-	repo := NewCarRepo(db)
+func CarDetailHandler(db *sql.DB) http.HandlerFunc {
+	repo := repos.NewCarRepo(db)
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
