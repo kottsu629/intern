@@ -6,6 +6,10 @@ import (
 	"log"
 	"net/http"
 
+	"app/handlers"
+	"app/repos"
+	"app/services"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -23,18 +27,18 @@ func main() {
 	}
 	fmt.Println("DB接続成功！")
 
-	carRepo := NewCarRepo(db)
-	bidRepo := NewBidRepo(db)
+	carRepo := repos.NewCarRepo(db)
+	bidRepo := repos.NewBidRepo(db)
 
-	carService := NewCarService(carRepo)
-	bidService := NewBidService(db, bidRepo, carRepo)
+	carService := services.NewCarService(carRepo)
+	bidService := services.NewBidService(db, bidRepo, carRepo)
 
-	carsHandler := NewCarsHandler(carRepo, carService)
-	bidsHandler := NewBidsHandler(bidRepo, bidService)
+	carsHandler := handlers.NewCarsHandler(carRepo, carService)
+	bidsHandler := handlers.NewBidsHandler(bidRepo, bidService)
 
-	http.Handle("/cars", withCORS(carsHandler))           // GET/POST
-	http.Handle("/cars/", withCORS(carDetailHandler(db))) // GET /cars/{id}
-	http.Handle("/bids", withCORS(bidsHandler))           // GET/POST
+	http.Handle("/cars", withCORS(carsHandler))                 // GET/POST
+	http.Handle("/cars/", withCORS(handlers.CarDetailHandler(db))) // GET /cars/{id}
+	http.Handle("/bids", withCORS(bidsHandler))                 // GET/POST
 	http.Handle("/", withCORS(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write([]byte("OK"))
 	})))
