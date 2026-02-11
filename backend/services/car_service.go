@@ -1,3 +1,5 @@
+// package services
+
 package services
 
 import (
@@ -32,4 +34,16 @@ func (s *CarService) CreateCar(ctx context.Context, req models.CarCreateRequest)
 	defer cancel()
 
 	return s.repo.CreateCar(ctx, req)
+}
+
+// 追加：一覧取得（sortは扱わない）。min>max入替はserviceで担当。
+func (s *CarService) ListCars(ctx context.Context, hasMin bool, hasMax bool, min int, max int) ([]models.Car, error) {
+	if hasMin && hasMax && min > max {
+		min, max = max, min
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	defer cancel()
+
+	return s.repo.ListCarsWithFilter(ctx, hasMin, hasMax, min, max)
 }

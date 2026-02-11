@@ -1,3 +1,5 @@
+// package handlers
+
 package handlers
 
 import (
@@ -58,7 +60,7 @@ func (h *CarsHandler) handleCreateCar(w http.ResponseWriter, r *http.Request) {
 //   ・min_price のみ → price >= min_price
 //   ・max_price のみ → price <= max_price
 //   ・両方あり → min_price <= price <= max_price（min > max なら入替）
-//   ・sort=price_desc → 高い順、それ以外は安い順
+//   ※ sort機能は削除
 func (h *CarsHandler) handleListCars(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 3*time.Second)
 	defer cancel()
@@ -66,14 +68,6 @@ func (h *CarsHandler) handleListCars(w http.ResponseWriter, r *http.Request) {
 	q := r.URL.Query()
 	minPriceStr := strings.TrimSpace(q.Get("min_price"))
 	maxPriceStr := strings.TrimSpace(q.Get("max_price"))
-	sortParam := q.Get("sort")
-
-	baseSQL := `
-		SELECT id, model, price, year, created_at
-		FROM cars
-	`
-	var whereConds []string
-	var args []any
 
 	var (
 		hasMin bool
@@ -90,6 +84,7 @@ func (h *CarsHandler) handleListCars(w http.ResponseWriter, r *http.Request) {
 		}
 		hasMin, min = true, v
 	}
+
 	if maxPriceStr != "" {
 		v, err := strconv.Atoi(maxPriceStr)
 		if err != nil {
@@ -99,35 +94,8 @@ func (h *CarsHandler) handleListCars(w http.ResponseWriter, r *http.Request) {
 		hasMax, max = true, v
 	}
 
-	switch {
-	case hasMin && hasMax:
-		if min > max {
-			min, max = max, min
-		}
-		whereConds = append(whereConds, "price BETWEEN ? AND ?")
-		args = append(args, min, max)
-
-	case hasMin && !hasMax:
-		whereConds = append(whereConds, "price >= ?")
-		args = append(args, min)
-
-	case !hasMin && hasMax:
-		whereConds = append(whereConds, "price <= ?")
-		args = append(args, max)
-	}
-
-	if len(whereConds) > 0 {
-		baseSQL += " WHERE " + strings.Join(whereConds, " AND ")
-	}
-
-	switch sortParam {
-	case "price_desc":
-		baseSQL += " ORDER BY price DESC"
-	default:
-		baseSQL += " ORDER BY price ASC"
-	}
-
-	cars, err := h.repo.ListCars(ctx, baseSQL, args...)
+	// SQLや条件組み立てはservice/repoに寄せる（sortは扱わない）
+	cars, err := h.service.ListCars(ctx, hasMin, hasMax, min, max)
 	if err != nil {
 		http.Error(w, "failed to query cars", http.StatusInternalServerError)
 		return
