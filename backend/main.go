@@ -37,7 +37,7 @@ func main() {
 	bidsHandler := handlers.NewBidsHandler(bidRepo, bidService)
 
 	http.Handle("/cars", withCORS(carsHandler))                 // GET/POST
-	http.Handle("/cars/", withCORS(handlers.CarDetailHandler(db))) // GET /cars/{id}
+	http.Handle("/cars/", withCORS(handlers.CarDetailHandler(carRepo))) // GET /cars/{id}
 	http.Handle("/bids", withCORS(bidsHandler))                 // GET/POST
 	http.Handle("/", withCORS(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write([]byte("OK"))

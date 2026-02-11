@@ -106,8 +106,8 @@ func (h *CarsHandler) handleListCars(w http.ResponseWriter, r *http.Request) {
 }
 
 // GET /cars/{id}
-func CarDetailHandler(db *sql.DB) http.HandlerFunc {
-	repo := repos.NewCarRepo(db)
+func CarDetailHandler(repo *repos.CarRepo) http.HandlerFunc {
+
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
