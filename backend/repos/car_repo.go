@@ -1,4 +1,4 @@
-// package repos
+
 
 package repos
 
@@ -14,7 +14,6 @@ type CarRepo struct{ db *sql.DB }
 
 func NewCarRepo(db *sql.DB) *CarRepo { return &CarRepo{db: db} }
 
-// -------- cars --------
 
 func (r *CarRepo) ExistsByID(ctx context.Context, id int64) (bool, error) {
 	row := r.db.QueryRowContext(ctx, `SELECT 1 FROM cars WHERE id = ? LIMIT 1`, id)
@@ -29,7 +28,6 @@ func (r *CarRepo) ExistsByID(ctx context.Context, id int64) (bool, error) {
 	return true, nil
 }
 
-// 既存：汎用実行（変更なし）
 func (r *CarRepo) ListCars(ctx context.Context, query string, args ...any) ([]models.Car, error) {
 	rows, err := r.db.QueryContext(ctx, query, args...)
 	if err != nil {
@@ -51,7 +49,7 @@ func (r *CarRepo) ListCars(ctx context.Context, query string, args ...any) ([]mo
 	return cars, nil
 }
 
-// 追加：filter付きの一覧取得（sort機能は入れない）
+
 func (r *CarRepo) ListCarsWithFilter(ctx context.Context, hasMin bool, hasMax bool, min int, max int) ([]models.Car, error) {
 	baseSQL := `
 		SELECT id, model, price, year, created_at
@@ -76,7 +74,7 @@ func (r *CarRepo) ListCarsWithFilter(ctx context.Context, hasMin bool, hasMax bo
 		baseSQL += " WHERE " + strings.Join(whereConds, " AND ")
 	}
 
-	// sortは仕様から削除（ORDER BYを付けない）
+	
 
 	return r.ListCars(ctx, baseSQL, args...)
 }

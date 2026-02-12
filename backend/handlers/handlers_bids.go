@@ -20,7 +20,7 @@ func NewBidsHandler(repo *repos.BidRepo, service *services.BidService) *BidsHand
 	return &BidsHandler{repo: repo, service: service}
 }
 
-// GET /bids?item_id=xxx  & POST /bids
+
 func (h *BidsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodPost:

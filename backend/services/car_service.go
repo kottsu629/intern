@@ -1,4 +1,4 @@
-// package services
+
 
 package services
 
@@ -36,7 +36,7 @@ func (s *CarService) CreateCar(ctx context.Context, req models.CarCreateRequest)
 	return s.repo.CreateCar(ctx, req)
 }
 
-// 追加：一覧取得（sortは扱わない）。min>max入替はserviceで担当。
+
 func (s *CarService) ListCars(ctx context.Context, hasMin bool, hasMax bool, min int, max int) ([]models.Car, error) {
 	if hasMin && hasMax && min > max {
 		min, max = max, min

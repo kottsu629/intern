@@ -1,4 +1,4 @@
-// package handlers
+
 
 package handlers
 
@@ -25,7 +25,7 @@ func NewCarsHandler(repo *repos.CarRepo, service *services.CarService) *CarsHand
 	return &CarsHandler{repo: repo, service: service}
 }
 
-// GET /cars  &  POST /cars
+
 func (h *CarsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
@@ -55,12 +55,7 @@ func (h *CarsHandler) handleCreateCar(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewEncoder(w).Encode(map[string]any{"id": id})
 }
 
-// GET /cars
-// 仕様（わかりやすい一般形）:
-//   ・min_price のみ → price >= min_price
-//   ・max_price のみ → price <= max_price
-//   ・両方あり → min_price <= price <= max_price（min > max なら入替）
-//   ※ sort機能は削除
+
 func (h *CarsHandler) handleListCars(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 3*time.Second)
 	defer cancel()
@@ -94,7 +89,7 @@ func (h *CarsHandler) handleListCars(w http.ResponseWriter, r *http.Request) {
 		hasMax, max = true, v
 	}
 
-	// SQLや条件組み立てはservice/repoに寄せる（sortは扱わない）
+	
 	cars, err := h.service.ListCars(ctx, hasMin, hasMax, min, max)
 	if err != nil {
 		http.Error(w, "failed to query cars", http.StatusInternalServerError)
@@ -105,7 +100,7 @@ func (h *CarsHandler) handleListCars(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewEncoder(w).Encode(cars)
 }
 
-// GET /cars/{id}
+
 func CarDetailHandler(repo *repos.CarRepo) http.HandlerFunc {
 
 

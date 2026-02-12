@@ -32,7 +32,7 @@ func (s *BidService) CreateBid(ctx context.Context, req models.BidRequest) error
 	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
 	defer cancel()
 
-	// FK違反を「DBエラー(500)」にしないため、先に存在チェック
+	
 	exists, err := s.carRepo.ExistsByID(ctx, req.CarID)
 	if err != nil {
 		return err
@@ -47,7 +47,7 @@ func (s *BidService) CreateBid(ctx context.Context, req models.BidRequest) error
 	}
 	defer tx.Rollback()
 
-	// request_id UNIQUE 前提（冪等性）
+	
 	if err := s.bidRepo.CreateBidTx(ctx, tx, req); err != nil {
 		return err
 	}
