@@ -81,7 +81,7 @@ func (h *CarsHandler) handleListCars(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func CarDetailHandler(repo *repos.CarRepo) http.HandlerFunc {
+func NewCarDetailHandler(repo *repos.CarRepo) http.HandlerFunc {
 
 
 	return func(w http.ResponseWriter, r *http.Request) {

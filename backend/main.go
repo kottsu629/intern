@@ -36,12 +36,16 @@ func main() {
 	carsHandler := handlers.NewCarsHandler(carRepo, carService)
 	bidsHandler := handlers.NewBidsHandler(bidRepo, bidService)
 
+	carDetailHandler := handlers.NewCarDetailHandler(carRepo)
+
+	healthHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    _, _ = w.Write([]byte("OK"))
+})
+
 	http.Handle("/cars", withCORS(carsHandler))                
-	http.Handle("/cars/", withCORS(handlers.CarDetailHandler(carRepo))) 
+	http.Handle("/cars/", withCORS(carDetailHandler)) 
 	http.Handle("/bids", withCORS(bidsHandler))                 
-	http.Handle("/", withCORS(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		_, _ = w.Write([]byte("OK"))
-	})))
+	http.Handle("/", withCORS(healthHandler))
 
 	fmt.Println("サーバー起動: 8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
