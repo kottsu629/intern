@@ -10,8 +10,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	"app/models"
 	"app/repos"
 	"app/services"
 )
@@ -30,30 +28,12 @@ func (h *CarsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		h.handleListCars(w, r)
-	case http.MethodPost:
-		h.handleCreateCar(w, r)
+	
 	default:
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 	}
 }
 
-func (h *CarsHandler) handleCreateCar(w http.ResponseWriter, r *http.Request) {
-	var req models.CarCreateRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "invalid JSON", http.StatusBadRequest)
-		return
-	}
-
-	id, err := h.service.CreateCar(r.Context(), req)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	_ = json.NewEncoder(w).Encode(map[string]any{"id": id})
-}
 
 
 func (h *CarsHandler) handleListCars(w http.ResponseWriter, r *http.Request) {

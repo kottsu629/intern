@@ -93,14 +93,3 @@ func (r *CarRepo) GetCarByID(ctx context.Context, carID int64) (*models.Car, err
 	return &c, nil
 }
 
-func (r *CarRepo) CreateCar(ctx context.Context, req models.CarCreateRequest) (int64, error) {
-	res, err := r.db.ExecContext(
-		ctx,
-		`INSERT INTO cars (model, price, year) VALUES (?, ?, ?)`,
-		req.Model, req.Price, req.Year,
-	)
-	if err != nil {
-		return 0, err
-	}
-	return res.LastInsertId()
-}
