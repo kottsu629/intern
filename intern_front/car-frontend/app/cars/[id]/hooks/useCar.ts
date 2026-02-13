@@ -20,12 +20,12 @@ export function useCar(carId: number) {
 
     const fetchCar = async () => {
       try {
-        const res = await fetch(`${API_BASE}/cars`);
+        const res = await fetch(`${API_BASE}/cars/${carId}`, { signal: controller.signal });
         if (!res.ok) throw new Error('API error');
 
-        const cars: Car[] = await res.json();
-        const found = cars.find((c) => c.id === carId) ?? null;
+        const found: Car = await res.json();
         setCar(found);
+
       } catch (e) {
         if (e instanceof DOMException && e.name === 'AbortError') return;
         console.error(e);
