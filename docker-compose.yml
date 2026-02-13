@@ -16,7 +16,7 @@ services:
       - ./init:/docker-entrypoint-initdb.d
 
   app:
-    build: ./app
+    build: ./backend
     container_name: go_app
     ports:
       - "8080:8080"
