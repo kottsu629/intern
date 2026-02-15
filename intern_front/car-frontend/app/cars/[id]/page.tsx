@@ -1,5 +1,6 @@
 import { CarDetailContainer } from './CarDetailContainer';
 
-export default function Page({ params }: { params: { id: string } }) {
-  return <CarDetailContainer id={params.id} />;
+export default async function Page({ params }: any) {
+  const { id } = await Promise.resolve(params);
+  return <CarDetailContainer id={id} />;
 }
