@@ -4,12 +4,15 @@ import { useEffect, useState } from 'react';
 import { API_BASE } from '../lib/api';
 import type { Car } from '../types';
 
-export function useCar(carId: number) {
-  const [car, setCar] = useState<Car | null>(null);
-  const [loading, setLoading] = useState(true);
+export function useCar(carId: number, initialCar: Car) {
+  const [car, setCar] = useState<Car>(initialCar);
+  const [loading, setLoading] = useState(!initialCar);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+
+    if (initialCar) return;
+    
     if (Number.isNaN(carId)) {
       setError('ID が不正です');
       setLoading(false);
@@ -37,7 +40,7 @@ export function useCar(carId: number) {
 
     fetchCar();
     return () => controller.abort();
-  }, [carId]);
+  }, [carId, initialCar]);
 
   return { car, loading, error };
 }

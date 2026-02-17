@@ -6,15 +6,13 @@ import { generateRequestId } from './lib/requestId';
 import { useCar } from './hooks/useCar';
 import { useBids } from './hooks/useBids';
 import { CarDetailPresentation } from './CarDetailPresentation';
+import type { Car } from './types';
 
-function parseAmount(input: string): number {
-  return Number(input.replace(/,/g, '').trim());
-}
 
-export function CarDetailContainer({ id }: { id: string }) {
+export function CarDetailContainer({ id, initialCar }: { id: string; initialCar: Car }) {
   const carId = useMemo(() => Number(id ?? NaN), [id]);
 
-  const { car, loading, error } = useCar(carId);
+  const { car, loading, error } = useCar(carId, initialCar);
   const { bids, bidsLoading, bidsError, refetchBids } = useBids(carId);
 
   const [bidder, setBidder] = useState('');
@@ -32,6 +30,10 @@ export function CarDetailContainer({ id }: { id: string }) {
       setBidSubmitError('車両IDが不正です');
       return;
     }
+  function parseAmount(input: string): number {
+    return Number(input.replace(/,/g, '').trim());
+  }
+
 
     const parsedAmount = parseAmount(amountInput);
     if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {

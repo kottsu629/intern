@@ -8,7 +8,7 @@ import { BidList } from './components/BidList';
 export function CarDetailPresentation(props: {
   loading: boolean;
   error: string | null;
-  car: Car | null;
+  car: Car;
 
   bids: Bid[];
   bidsLoading: boolean;
@@ -46,8 +46,6 @@ export function CarDetailPresentation(props: {
       title="車両詳細"
       loading={loading}
       error={error}
-      notFound={!loading && !error && !car}
-      notFoundMessage="指定された ID の車が見つかりませんでした。"
     >
       <main className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="bg-white shadow-lg rounded-xl px-8 py-6 max-w-3xl w-full border border-slate-100">
