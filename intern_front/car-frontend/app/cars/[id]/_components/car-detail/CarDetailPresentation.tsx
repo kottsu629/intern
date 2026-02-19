@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import type { Car, Bid } from './types';
-import { PageState } from './components/PageState';
-import { CarInfo } from './components/CarInfo';
-import { BidForm } from './components/BidForm';
-import { BidList } from './components/BidList';
+import type { Car, Bid } from '../../types';
+import { PageState } from '../PageState';
+import { CarInfo } from '../CarInfo';
+import { BidForm } from '../BidForm';
+import { BidList } from '../BidList';
 
 export function CarDetailPresentation(props: {
   loading: boolean;

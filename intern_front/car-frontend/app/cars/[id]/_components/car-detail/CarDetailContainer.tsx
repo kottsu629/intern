@@ -1,12 +1,12 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { API_BASE } from './lib/api';
-import { generateRequestId } from './lib/requestId';
-import { useCar } from './hooks/useCar';
-import { useBids } from './hooks/useBids';
+import { API_BASE } from '../../_lib/api';
+import { generateRequestId } from '../../_lib/requestId';
+import { useCar } from '../../_hooks/useCar';
+import { useBids } from '../../_hooks/useBids';
 import { CarDetailPresentation } from './CarDetailPresentation';
-import type { Car } from './types';
+import type { Car } from '../../types';
 
 
 export function CarDetailContainer({ id, initialCar }: { id: string; initialCar: Car }) {

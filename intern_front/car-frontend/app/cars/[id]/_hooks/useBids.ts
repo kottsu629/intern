@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { API_BASE } from '../lib/api';
+import { API_BASE } from '../_lib/api';
 import type { Bid } from '../types';
 
 export function useBids(carId: number) {

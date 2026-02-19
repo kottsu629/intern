@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
-import { CarDetailContainer } from './CarDetailContainer';
-import { API_BASE } from './lib/api';
+import { CarDetailContainer } from './_components/car-detail/CarDetailContainer';
+import { API_BASE } from './_lib/api';
 import type { Car } from './types';
 
 type PageProps = {
@@ -8,6 +8,7 @@ type PageProps = {
 };
 
 async function fetchCarOr404(idNum: number): Promise<Car> {
+  
   const res = await fetch(`${API_BASE}/cars/${idNum}`, { cache: 'no-store' });
 
   if (res.status === 404) notFound();

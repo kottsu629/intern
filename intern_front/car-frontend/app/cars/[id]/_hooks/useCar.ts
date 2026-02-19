@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { API_BASE } from '../lib/api';
+import { API_BASE } from '../_lib/api';
 import type { Car } from '../types';
 
 export function useCar(carId: number, initialCar: Car) {
