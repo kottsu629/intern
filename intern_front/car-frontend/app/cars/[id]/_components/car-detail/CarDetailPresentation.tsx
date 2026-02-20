@@ -1,45 +1,22 @@
 import Link from 'next/link';
+import type React from 'react';
 import type { Car, Bid } from '../../types';
 import { PageState } from '../PageState';
 import { CarInfo } from '../CarInfo';
-import { BidForm } from '../BidForm';
 import { BidList } from '../BidList';
 
 export function CarDetailPresentation(props: {
   loading: boolean;
   error: string | null;
-  car: Car;
+  car: Car | null;
 
   bids: Bid[];
   bidsLoading: boolean;
   bidsError: string | null;
 
-  bidder: string;
-  amountInput: string;
-  bidSubmitting: boolean;
-  bidSubmitError: string | null;
-  bidSubmitSuccess: string | null;
-
-  onChangeBidder: (v: string) => void;
-  onChangeAmountInput: (v: string) => void;
-  onSubmitBid: (e: React.FormEvent<HTMLFormElement>) => void;
+  bidForm: React.ReactNode;
 }) {
-  const {
-    loading,
-    error,
-    car,
-    bids,
-    bidsLoading,
-    bidsError,
-    bidder,
-    amountInput,
-    bidSubmitting,
-    bidSubmitError,
-    bidSubmitSuccess,
-    onChangeBidder,
-    onChangeAmountInput,
-    onSubmitBid,
-  } = props;
+  const { loading, error, car, bids, bidsLoading, bidsError, bidForm } = props;
 
   return (
     <PageState
@@ -53,18 +30,9 @@ export function CarDetailPresentation(props: {
             車両詳細
           </h1>
 
-          <CarInfo car={car as Car} />
+          {car ? <CarInfo car={car} /> : <p className="text-slate-600">車両情報がありません</p>}
 
-          <BidForm
-            bidder={bidder}
-            amountInput={amountInput}
-            bidSubmitting={bidSubmitting}
-            bidSubmitError={bidSubmitError}
-            bidSubmitSuccess={bidSubmitSuccess}
-            onChangeBidder={onChangeBidder}
-            onChangeAmountInput={onChangeAmountInput}
-            onSubmit={onSubmitBid}
-          />
+          {bidForm}
 
           <BidList bids={bids} bidsLoading={bidsLoading} bidsError={bidsError} />
 
