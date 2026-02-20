@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { API_BASE } from '../../_lib/api';
 import { generateRequestId } from '../../_lib/requestId';
-import { BidForm } from '../BidForm';
+import { BidForm, type BidFormValues } from '../BidForm';
 
 function parseAmount(input: string): number {
   return Number(input.replace(/,/g, '').trim());
@@ -11,17 +11,16 @@ function parseAmount(input: string): number {
 
 export function BidFormContainer(props: {
   carId: number;
-  onSubmitted: () => Promise<void> | void; 
+  onSubmitted: () => Promise<void> | void;
 }) {
   const { carId, onSubmitted } = props;
 
-  const [bidder, setBidder] = useState('');
-  const [amountInput, setAmountInput] = useState('');
   const [bidSubmitting, setBidSubmitting] = useState(false);
   const [bidSubmitError, setBidSubmitError] = useState<string | null>(null);
   const [bidSubmitSuccess, setBidSubmitSuccess] = useState<string | null>(null);
+  const [resetKey, setResetKey] = useState(0);
 
-  const handleSubmitBid = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitBid = async (v: BidFormValues, e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setBidSubmitError(null);
     setBidSubmitSuccess(null);
@@ -31,13 +30,13 @@ export function BidFormContainer(props: {
       return;
     }
 
-    const parsedAmount = parseAmount(amountInput);
+    const parsedAmount = parseAmount(v.amountInput);
     if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
       setBidSubmitError('入札額は正の数で入力してください');
       return;
     }
 
-    const trimmedBidder = bidder.trim();
+    const trimmedBidder = v.bidder.trim();
     if (!trimmedBidder) {
       setBidSubmitError('入札者名を入力してください');
       return;
@@ -67,8 +66,8 @@ export function BidFormContainer(props: {
       }
 
       setBidSubmitSuccess('入札を受け付けました');
-      setAmountInput('');
-      await onSubmitted(); 
+      await onSubmitted();
+      setResetKey((k) => k + 1); 
     } catch (err) {
       console.error(err);
       setBidSubmitError('入札の送信中にエラーが発生しました');
@@ -79,14 +78,11 @@ export function BidFormContainer(props: {
 
   return (
     <BidForm
-      bidder={bidder}
-      amountInput={amountInput}
       bidSubmitting={bidSubmitting}
       bidSubmitError={bidSubmitError}
       bidSubmitSuccess={bidSubmitSuccess}
-      onChangeBidder={setBidder}
-      onChangeAmountInput={setAmountInput}
       onSubmit={handleSubmitBid}
+      resetKey={resetKey}
     />
   );
 }
