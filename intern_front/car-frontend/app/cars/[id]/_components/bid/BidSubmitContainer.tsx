@@ -3,13 +3,15 @@
 import { useState } from 'react';
 import { API_BASE } from '../../_lib/api';
 import { generateRequestId } from '../../_lib/requestId';
-import { BidForm, type BidFormValues } from '../BidForm';
+import { parseAmount } from './helpers';
+import { BidSubmit } from './BidSubmit';
 
-function parseAmount(input: string): number {
-  return Number(input.replace(/,/g, '').trim());
-}
+export type BidFormValues = {
+  bidder: string;
+  amountInput: string;
+};
 
-export function BidFormContainer(props: {
+export function BidSubmitContainer(props: {
   carId: number;
   onSubmitted: () => Promise<void> | void;
 }) {
@@ -67,7 +69,7 @@ export function BidFormContainer(props: {
 
       setBidSubmitSuccess('入札を受け付けました');
       await onSubmitted();
-      setResetKey((k) => k + 1); 
+      setResetKey((k) => k + 1);
     } catch (err) {
       console.error(err);
       setBidSubmitError('入札の送信中にエラーが発生しました');
@@ -77,7 +79,7 @@ export function BidFormContainer(props: {
   };
 
   return (
-    <BidForm
+    <BidSubmit
       bidSubmitting={bidSubmitting}
       bidSubmitError={bidSubmitError}
       bidSubmitSuccess={bidSubmitSuccess}

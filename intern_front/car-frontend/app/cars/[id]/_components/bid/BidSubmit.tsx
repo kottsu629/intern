@@ -1,13 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import type { BidFormValues } from './BidSubmitContainer';
 
-export type BidFormValues = {
-  bidder: string;
-  amountInput: string;
-};
-
-export function BidForm(props: {
+export function BidSubmit(props: {
   bidSubmitting: boolean;
   bidSubmitError: string | null;
   bidSubmitSuccess: string | null;
@@ -26,7 +22,7 @@ export function BidForm(props: {
   }, [resetKey]);
 
   return (
-    <section className="mt-8 border border-slate-200 rounded-lg p-4">
+    <section className="border border-slate-200 rounded-lg p-4">
       <h2 className="text-xl font-semibold mb-3">この車に入札する</h2>
 
       <form onSubmit={(e) => onSubmit({ bidder, amountInput }, e)} className="space-y-4">

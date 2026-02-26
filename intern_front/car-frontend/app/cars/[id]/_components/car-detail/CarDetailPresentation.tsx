@@ -1,40 +1,21 @@
 import Link from 'next/link';
-import type React from 'react';
-import type { Car, Bid } from '../../types';
-import { PageState } from '../PageState';
+import type { Car } from '../../types';
 import { CarInfo } from '../CarInfo';
-import { BidList } from '../BidList';
+import { BidForm } from '../bid/BidForm';
 
-export function CarDetailPresentation(props: {
-  loading: boolean;
-  error: string | null;
-  car: Car | null;
-
-  bids: Bid[];
-  bidsLoading: boolean;
-  bidsError: string | null;
-
-  bidForm: React.ReactNode;
-}) {
-  const { loading, error, car, bids, bidsLoading, bidsError, bidForm } = props;
+export function CarDetailPresentation(props: { carId: number; car: Car }) {
+  const { carId, car } = props;
 
   return (
-    <PageState
-      title="車両詳細"
-      loading={loading}
-      error={error}
-    >
       <main className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="bg-white shadow-lg rounded-xl px-8 py-6 max-w-3xl w-full border border-slate-100">
           <h1 className="text-2xl font-bold mb-6" tabIndex={0}>
             車両詳細
           </h1>
 
-          {car ? <CarInfo car={car} /> : <p className="text-slate-600">車両情報がありません</p>}
+          <CarInfo car={car} />
 
-          {bidForm}
-
-          <BidList bids={bids} bidsLoading={bidsLoading} bidsError={bidsError} />
+          <BidForm carId={carId} />
 
           <div className="mt-8 text-right">
             <Link
@@ -47,6 +28,5 @@ export function CarDetailPresentation(props: {
           </div>
         </div>
       </main>
-    </PageState>
   );
 }
