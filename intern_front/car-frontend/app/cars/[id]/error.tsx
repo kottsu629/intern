@@ -12,7 +12,7 @@ export default function Error({
         <div className="bg-white shadow rounded p-6">
         <h2 className="text-xl font-bold mb-4">エラーが発生しました</h2>
         <p className="text-sm text-slate-600 mb-4">
-            申し訳ありません。データの取得に失敗しました。
+            {error.message}
         </p>
         <button
             onClick={() => reset()}
