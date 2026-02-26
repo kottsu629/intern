@@ -12,11 +12,6 @@ export function useBids(carId: number) {
   const seq = useRef(0);
 
   const refetchBids = useCallback(async () => {
-    if (Number.isNaN(carId)) {
-      setBidsError('ID が不正です');
-      setBidsLoading(false);
-      return;
-    }
 
     const mySeq = ++seq.current;
     try {

@@ -27,11 +27,6 @@ export function BidSubmitContainer(props: {
     setBidSubmitError(null);
     setBidSubmitSuccess(null);
 
-    if (!Number.isFinite(carId)) {
-      setBidSubmitError('車両IDが不正です');
-      return;
-    }
-
     const parsedAmount = parseAmount(v.amountInput);
     if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
       setBidSubmitError('入札額は正の数で入力してください');
