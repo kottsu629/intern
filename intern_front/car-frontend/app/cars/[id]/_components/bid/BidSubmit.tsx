@@ -1,7 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { BidFormValues } from './BidSubmitContainer';
+
+export type BidFormValues = {
+  bidder: string;
+  amountInput: string;
+};
 
 export function BidSubmit(props: {
   bidSubmitting: boolean;
