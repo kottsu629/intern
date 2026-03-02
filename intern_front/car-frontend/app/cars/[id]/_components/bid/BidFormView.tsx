@@ -2,22 +2,22 @@
 
 import { BidList } from './BidList';
 import { BidSubmit } from './BidSubmit';
-import type { BidFormVM } from './useBidFormVM';
+import type { BidFormViewAndModel} from './useBidFormViewAndModel';
 
-export function BidFormView(props: { vm: BidFormVM }) {
-    const { vm } = props;
+export function BidFormView(props: { ViewAndModel: BidFormViewAndModel }) {
+    const { ViewAndModel } = props;
 
     return (
     <section className="mt-8 space-y-8">
         <BidSubmit
-        bidSubmitting={vm.submit.submitting}
-        bidSubmitError={vm.submit.error}
-        bidSubmitSuccess={vm.submit.success}
-        onSubmit={vm.submit.onSubmit}
-        resetKey={vm.submit.resetKey}
+        bidSubmitting={ViewAndModel.submit.submitting}
+        bidSubmitError={ViewAndModel.submit.error}
+        bidSubmitSuccess={ViewAndModel.submit.success}
+        onSubmit={ViewAndModel.submit.onSubmit}
+        resetKey={ViewAndModel.submit.resetKey}
         />
 
-        <BidList bids={vm.list.bids} bidsLoading={vm.list.loading} bidsError={vm.list.error} />
+        <BidList bids={ViewAndModel.list.bids} bidsLoading={ViewAndModel.list.loading} bidsError={ViewAndModel.list.error} />
     </section>
     );
 }

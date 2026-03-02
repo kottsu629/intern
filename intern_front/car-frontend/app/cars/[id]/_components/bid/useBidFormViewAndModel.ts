@@ -4,7 +4,7 @@ import type { Bid } from '../../types';
 import { useBids } from '../../_hooks/useBids';
 import { useBidSubmit } from './useBidSubmit';
 
-export type BidFormVM = {
+export type BidFormViewAndModel = {
     list: {
     bids: Bid[];
     loading: boolean;
@@ -22,7 +22,7 @@ export type BidFormVM = {
     };
 };
 
-export function useBidFormVM(carId: number): BidFormVM {
+export function useBidFormViewAndModel(carId: number): BidFormViewAndModel {
     const { bids, bidsLoading, bidsError, refetchBids } = useBids(carId);
 
     const submit = useBidSubmit({ carId, onSubmitted: refetchBids });
