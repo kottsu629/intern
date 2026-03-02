@@ -2,22 +2,44 @@
 
 import { BidList } from './BidList';
 import { BidSubmit } from './BidSubmit';
-import type { BidFormViewModel} from './useBidFormViewModel';
+import type { Bid } from '../../types';
 
-export function BidFormView(props: { ViewModel: BidFormViewModel }) {
-    const { ViewModel } = props;
+export function BidFormView(props: {
+    bids: Bid[];
+    bidsLoading: boolean;
+    bidsError: string | null;
+
+    bidSubmitting: boolean;
+    bidSubmitError: string | null;
+    bidSubmitSuccess: string | null;
+    resetKey: number;
+    onSubmit: (
+    v: { bidder: string; amountInput: string },
+    e: React.FormEvent<HTMLFormElement>
+    ) => void;
+}) {
+    const {
+    bids,
+    bidsLoading,
+    bidsError,
+    bidSubmitting,
+    bidSubmitError,
+    bidSubmitSuccess,
+    onSubmit,
+    resetKey,
+    } = props;
 
     return (
     <section className="mt-8 space-y-8">
         <BidSubmit
-        bidSubmitting={ViewModel.submit.submitting}
-        bidSubmitError={ViewModel.submit.error}
-        bidSubmitSuccess={ViewModel.submit.success}
-        onSubmit={ViewModel.submit.onSubmit}
-        resetKey={ViewModel.submit.resetKey}
+        bidSubmitting={bidSubmitting}
+        bidSubmitError={bidSubmitError}
+        bidSubmitSuccess={bidSubmitSuccess}
+        onSubmit={onSubmit}
+        resetKey={resetKey}
         />
 
-        <BidList bids={ViewModel.list.bids} bidsLoading={ViewModel.list.loading} bidsError={ViewModel.list.error} />
+        <BidList bids={bids} bidsLoading={bidsLoading} bidsError={bidsError} />
     </section>
     );
 }
