@@ -27,7 +27,7 @@ export function CarsTable(props: { cars: Car[] }) {
                 <Link
                   href={`/cars/${car.id}`}
                   aria-label={`ID ${car.id} の詳細を見る`}
-                  className="text-indigo-600 hover:text-indigo-800 text-sm font-medium underline"
+                  className="text-indigo-600 hover:text-indigo-800 text-sm font-medium"
                 >
                   詳細を見る
                 </Link>
