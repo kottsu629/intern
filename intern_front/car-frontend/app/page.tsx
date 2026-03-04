@@ -84,22 +84,7 @@ export default function HomePage() {
     setMaxPrice('');
   };
 
-  useEffect(() => {
-    const fetchCars = async () => {
-      try {
-        const res = await fetch('http://localhost:8080/cars');
-        if (!res.ok) {
-          throw new Error('API error');
-        }
-        const data: Car[] = await res.json();
-        setCars(data);
-      } catch (e) {
-        console.error(e);
-        setError('データ取得に失敗しました（APIエラー）');
-      } finally {
-        setLoading(false);
-      }
-    };
+ 
 
     fetchCars();
   }, []);
