@@ -2,7 +2,7 @@
 
 import { Car } from './types';
 import { FilterBar } from './_components/FilterBar';
-import { CarTable } from './_components/CarTable';
+import { CarsTable } from './_components/CarsTable';
 import { Pagination } from './_components/Pagination';
 import { PageState } from './_components/PageState';
 import { useFilter } from './_lib/useFilter';
@@ -24,7 +24,7 @@ export function HomePresentation({ id, onFetch }: Props) {
         <h1 className="text-2xl font-black text-slate-900 mb-6">車両オークション一覧</h1>
         <PageState loading={loading} error={error}>
           <FilterBar {...filter} />
-          <CarTable cars={pagedItems} />
+          <CarsTable cars={pagedItems} />
           <Pagination currentPage={currentPage} totalPages={totalPages} onGo={setCurrentPage} />
         </PageState>
       </div>

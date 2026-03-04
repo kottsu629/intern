@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Car } from '../types';
 
-export function CarTable(props: { cars: Car[] }) {
+export function CarsTable(props: { cars: Car[] }) {
   const { cars } = props;
 
   return (
