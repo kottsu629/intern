@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Car } from '../types';
+import type { Car } from '../types';
 
-export function useFetchCars(id: string, onFetch: () => Promise<Car[]>) {
+export function useFetchCars(onFetch: () => Promise<Car[]>) {
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -14,8 +14,9 @@ export function useFetchCars(id: string, onFetch: () => Promise<Car[]>) {
       setError(null);
       const data = await onFetch();
       setCars(data);
-    } catch {
-      setError('データの取得に失敗しました');
+    } catch (e) {
+      console.error(e);
+      setError(String(e));
     } finally {
       setLoading(false);
     }
@@ -23,7 +24,7 @@ export function useFetchCars(id: string, onFetch: () => Promise<Car[]>) {
 
   useEffect(() => {
     loadData();
-  }, [loadData, id]);
+  }, [loadData]);
 
   return { cars, loading, error };
 }

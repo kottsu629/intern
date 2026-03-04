@@ -1,6 +1,6 @@
 'use client';
 
-import { Car } from './types';
+import type { Car } from './types';
 import { FilterBar } from './_components/FilterBar';
 import { CarsTable } from './_components/CarsTable';
 import { Pagination } from './_components/Pagination';
@@ -9,13 +9,15 @@ import { useFilter } from './_lib/useFilter';
 import { usePagination } from './_lib/usePagination';
 import { useFetchCars } from './_lib/useFetchCars';
 
-type Props = { id: string; onFetch: () => Promise<Car[]>; };
+type Props = { onFetch: () => Promise<Car[]> };
 
-export function HomePresentation({ id, onFetch }: Props) {
-  const { cars, loading, error } = useFetchCars(id, onFetch);
+export function HomePresentation({ onFetch }: Props) {
+  const { cars, loading, error } = useFetchCars(onFetch);
   const filter = useFilter(cars);
   const { currentPage, setCurrentPage, totalPages, pagedItems } = usePagination(
-    filter.filteredCars, 2, filter.appliedMin + filter.appliedMax
+    filter.filteredCars,
+    2,
+    filter.appliedMin + filter.appliedMax
   );
 
   return (

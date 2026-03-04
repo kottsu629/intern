@@ -2,9 +2,9 @@
 
 import { API_BASE, fetchJson } from './_lib/api';
 import { HomePresentation } from './HomePresentation';
-import { Car } from './types';
+import type { Car } from './types';
 
-export function HomeContainer({ id }: { id: string }) {
+export function HomeContainer() {
   const fetchAction = () => fetchJson<Car[]>(`${API_BASE}/cars`);
-  return <HomePresentation id={id} onFetch={fetchAction} />;
+  return <HomePresentation onFetch={fetchAction} />;
 }
