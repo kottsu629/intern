@@ -13,11 +13,14 @@ type Props = { onFetch: () => Promise<Car[]> };
 
 export function HomePresentation({ onFetch }: Props) {
   const { cars, loading, error } = useFetchCars(onFetch);
+  
   const filter = useFilter(cars);
+
+  const resetKey = `${filter.appliedMin ?? ''}-${filter.appliedMax ?? ''}`;
   const { currentPage, setCurrentPage, totalPages, pagedItems } = usePagination(
     filter.filteredCars,
     2,
-    filter.appliedMin + filter.appliedMax
+    resetKey
   );
 
   return (

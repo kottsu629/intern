@@ -1,6 +1,7 @@
 type Props = {
   minInput: string;
   maxInput: string;
+  error: string | null;
   onChangeMinInput: (v: string) => void;
   onChangeMaxInput: (v: string) => void;
   onDecreaseMin: () => void;
@@ -86,6 +87,7 @@ export function FilterBar(props: Props) {
           </button>
         </div>
       </div>
+      {props.error && <p className="mt-2 text-xs text-red-600" aria-live="polite">{props.error}</p>}
     </section>
   );
 }
