@@ -3,12 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 
-type Car = {
-  id: number;
-  model: string;
-  year: number;
-  price: number;
-};
+
 
 export default function HomePage() {
   const [cars, setCars] = useState<Car[]>([]);
