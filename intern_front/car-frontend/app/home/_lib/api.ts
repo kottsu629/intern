@@ -1,4 +1,3 @@
-// app/home/lib/api.ts
 import { generateRequestId } from './requestId';
 
 export const API_BASE = 'http://localhost:8080';
