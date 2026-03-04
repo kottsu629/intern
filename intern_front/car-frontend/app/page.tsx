@@ -19,12 +19,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-8">
       <div className="max-w-5xl mx-auto">
-        {/* ヘッダー */}
-        <header className="mb-6">
-          <h1 className="text-2xl font-bold text-slate-900">
-            入札対象車両一覧
-          </h1>
-        </header>
+        
 
         
 
