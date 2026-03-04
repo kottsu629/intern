@@ -14,8 +14,7 @@ export default function HomePage() {
   const [minPrice, setMinPrice] = useState<string>('');
   const [maxPrice, setMaxPrice] = useState<string>('');
 
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 2;
+
 
   const parsePrice = (value: string): number | null => {
     const trimmed = value.trim();
@@ -96,19 +95,7 @@ export default function HomePage() {
     return sorted;
   }, [cars, minPrice, maxPrice]);
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [minPrice, maxPrice]);
-
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredAndSortedCars.length / itemsPerPage),
-  );
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const pagedCars = filteredAndSortedCars.slice(
-    startIndex,
-    startIndex + itemsPerPage,
-  );
+ 
 
  
 
