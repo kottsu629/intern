@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-export function usePagination<T>(items: T[], itemsPerPage: number, resetTrigger?: any) {
+export function usePagination<T>(items: T[], itemsPerPage: number, resetTrigger?: unknown) {
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => { setCurrentPage(1); }, [resetTrigger]);
 
