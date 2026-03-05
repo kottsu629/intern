@@ -15,8 +15,7 @@ export function useFetchCars(onFetch: () => Promise<Car[]>) {
       const data = await onFetch();
       setCars(data);
     } catch (e) {
-      console.error(e);
-      setError(e instanceof Error ? e.message : 'データ取得に失敗しました（APIエラー）');
+      setError(e instanceof Error ? e.message : String(e));
     } finally {
       setLoading(false);
     }

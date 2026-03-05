@@ -1,7 +1,6 @@
 'use client';
 
 import type { Car } from '../types';
-import { parsePrice } from './useFilterPrice';
 import { useFilterInput } from './useFilterInput';
 import { useFilterApply } from './useFilterApply';
 

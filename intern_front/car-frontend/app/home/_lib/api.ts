@@ -8,12 +8,17 @@ export async function fetchJson<T>(url: string): Promise<T> {
     'Content-Type': 'application/json',
   };
 
-  const res = await fetch(url, {
-    method: 'GET',
-    headers: headers,
+  const res = await fetch(url, { method: 'GET', headers }).catch(() => {
+    
+    console.error(`Network Error (X-Request-ID: ${headers['X-Request-ID']})`);
+    throw new Error('サーバーに接続できませんでした。ネットワーク環境をご確認ください。');
   });
 
-  if (!res.ok) throw new Error(`API Error: ${res.status} (ID: ${headers['X-Request-ID']})`);
-  
+  if (!res.ok) {
+    
+    console.error(`API Error: ${res.status} (X-Request-ID: ${headers['X-Request-ID']})`);
+    throw new Error('通信エラーが発生しました。しばらくしてから再度お試しください。');
+  }
+
   return (await res.json()) as T;
 }
