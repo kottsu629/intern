@@ -41,7 +41,7 @@ export function useFilter(cars: Car[]) {
     onIncreaseMin,
     onDecreaseMax,
     onIncreaseMax,
-    onSearch: () => apply(minInput, maxInput, parsePrice),
+    onSearch: () => apply(minInput, maxInput),
     onClear: () => {
       resetInputs();
       resetApply();

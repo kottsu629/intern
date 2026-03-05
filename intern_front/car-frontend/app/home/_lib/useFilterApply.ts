@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { parsePrice } from './useFilterPrice';
 
 export function useFilterApply() {
   const [appliedMin, setAppliedMin] = useState<number | null>(null);
@@ -12,7 +13,6 @@ export function useFilterApply() {
   const apply = (
     minInput: string,
     maxInput: string,
-    parsePrice: (v: string) => number | null,
   ) => {
     if (minInput.trim() !== '' && parsePrice(minInput) === null) {
       setError('最低価格は数字で入力してください');
