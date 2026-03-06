@@ -1,5 +1,3 @@
-'use client';
-
 import { API_BASE } from '../_lib/api';
 import { HomePresentation } from './HomePresentation';
 import type { Car } from '../_types/car';
