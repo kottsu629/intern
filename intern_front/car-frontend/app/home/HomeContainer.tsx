@@ -3,7 +3,6 @@
 import { API_BASE } from '../_lib/api';
 import { HomePresentation } from './HomePresentation';
 import type { Car } from '../_types/car';
-import { useCallback } from 'react';
 import { generateRequestId } from '../_lib/requestId';
 
 export async function fetchJson<T>(url: string): Promise<T> {
@@ -28,6 +27,6 @@ export async function fetchJson<T>(url: string): Promise<T> {
 }
 
 export function HomeContainer() {
-  const fetchAction = useCallback(() => fetchJson<Car[]>(`${API_BASE}/cars`), []);
+  const fetchAction = () => fetchJson<Car[]>(`${API_BASE}/cars`);
   return <HomePresentation onFetch={fetchAction} />;
 }
