@@ -1,13 +1,13 @@
 'use client';
 
-import type { Car } from './types';
+import type { Car } from '../_types/car';
 import { FilterBar } from './_components/FilterBar';
 import { CarsTable } from './_components/CarsTable';
 import { Pagination } from './_components/Pagination';
 import { PageState } from './_components/PageState';
-import { useFilter } from './_lib/useFilter';
-import { usePagination } from './_lib/usePagination';
-import { useFetchCars } from './_lib/useFetchCars';
+import { useFilter } from './_hooks/useFilter';
+import { usePagination } from './_hooks/usePagination';
+import { useFetchCars } from './_hooks/useFetchCars';
 
 type Props = { onFetch: () => Promise<Car[]> };
 

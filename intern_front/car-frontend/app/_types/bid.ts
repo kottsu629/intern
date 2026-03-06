@@ -1,10 +1,3 @@
-export type Car = {
-  id: number;
-  model: string;
-  year: number;
-  price: number;
-};
-
 export type Bid = {
   id: number;
   car_id: number;

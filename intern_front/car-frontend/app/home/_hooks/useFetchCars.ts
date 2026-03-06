@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import type { Car } from '../types';
+import type { Car } from '../../_types/car';
 
 export function useFetchCars(onFetch: () => Promise<Car[]>) {
   const [cars, setCars] = useState<Car[]>([]);

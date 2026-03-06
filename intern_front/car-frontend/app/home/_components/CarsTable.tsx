@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { Car } from '../types';
+import type { Car } from '../../_types/car';
 
 export function CarsTable(props: { cars: Car[] }) {
   const { cars } = props;

@@ -1,7 +1,7 @@
 'use client';
 
-import { useBids } from '../../_hooks/useBids';
-import { useBidSubmit } from './useBidSubmit';
+import { useBids } from '../../_hook/useBids';
+import { useBidSubmit } from '../../_hook/useBidSubmit';
 import { BidFormView } from './BidFormView';
 
 export function BidForm(props: { carId: number }) {

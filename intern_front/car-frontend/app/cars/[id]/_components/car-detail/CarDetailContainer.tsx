@@ -1,7 +1,7 @@
-import type { Car } from '../../types';
+import type { Car } from '../../../../_types/car';
 import { CarDetailPresentation } from './CarDetailPresentation';
 import { notFound } from 'next/navigation';
-import { API_BASE } from '../../_lib/api';
+import { API_BASE } from '../../../../_lib/api';
 
 export async function CarDetailContainer(props: { id: string }) {
   const { id } = props;

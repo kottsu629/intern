@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { Car } from '../../types';
+import type { Car } from '../../../../_types/car';
 import { CarInfo } from '../CarInfo';
 import { BidForm } from '../bid/BidForm';
 
