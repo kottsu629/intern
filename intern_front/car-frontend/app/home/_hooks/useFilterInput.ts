@@ -21,17 +21,22 @@ export function useFilterInput(onErrorClear: () => void) {
       onErrorClear();
     },
 
-    onDecreaseMin: () =>
-      setMinInput(p => formatPrice(Math.max(0, (parsePrice(p) ?? 0) - 100000))),
-
-    onIncreaseMin: () =>
-      setMinInput(p => formatPrice((parsePrice(p) ?? 0) + 100000)),
-
-    onDecreaseMax: () =>
-      setMaxInput(p => formatPrice(Math.max(0, (parsePrice(p) ?? 0) - 100000))),
-
-    onIncreaseMax: () =>
-      setMaxInput(p => formatPrice((parsePrice(p) ?? 0) + 100000)),
+    onDecreaseMin: () => {
+      setMinInput(p => formatPrice(Math.max(0, (parsePrice(p) ?? 0) - 100000)));
+      onErrorClear();
+    },
+    onIncreaseMin: () => {
+      setMinInput(p => formatPrice((parsePrice(p) ?? 0) + 100000));
+      onErrorClear();
+    },
+    onDecreaseMax: () => {
+      setMaxInput(p => formatPrice(Math.max(0, (parsePrice(p) ?? 0) - 100000)));
+      onErrorClear();
+    },
+    onIncreaseMax: () => {
+      setMaxInput(p => formatPrice((parsePrice(p) ?? 0) + 100000));
+      onErrorClear();
+    },
 
     resetInputs: () => {
       setMinInput('');
