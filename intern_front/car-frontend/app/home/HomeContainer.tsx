@@ -10,13 +10,11 @@ export async function fetchJson<T>(url: string): Promise<T> {
   };
 
   const res = await fetch(url, { method: 'GET', headers }).catch(() => {
-    
     console.error(`Network Error (X-Request-ID: ${headers['X-Request-ID']})`);
     throw new Error('サーバーに接続できませんでした。ネットワーク環境をご確認ください。');
   });
 
   if (!res.ok) {
-    
     console.error(`API Error: ${res.status} (X-Request-ID: ${headers['X-Request-ID']})`);
     throw new Error('通信エラーが発生しました。しばらくしてから再度お試しください。');
   }
@@ -24,7 +22,7 @@ export async function fetchJson<T>(url: string): Promise<T> {
   return (await res.json()) as T;
 }
 
-export function HomeContainer() {
-  const fetchAction = () => fetchJson<Car[]>(`${API_BASE}/cars`);
-  return <HomePresentation onFetch={fetchAction} />;
+export async function HomeContainer() {
+  const cars = await fetchJson<Car[]>(`${API_BASE}/cars`);
+  return <HomePresentation cars={cars} />;
 }
