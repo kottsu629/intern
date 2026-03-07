@@ -2,7 +2,7 @@
 
 import { BidList } from './BidList';
 import { BidSubmit } from './BidSubmit';
-import type { Bid } from '../../types';
+import type { Bid } from '../../../../_types/bid';
 
 export function BidFormView(props: {
     bids: Bid[];

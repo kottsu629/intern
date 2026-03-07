@@ -1,8 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { API_BASE } from '../_lib/api';
-import type { Bid } from '../types';
+import { API_BASE } from '../../../_lib/api';
+import type { Bid } from '../../../_types/bid';
 
 export function useBids(carId: number) {
   const [bids, setBids] = useState<Bid[]>([]);

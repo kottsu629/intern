@@ -1,4 +1,4 @@
-import type { Bid } from '../../types';
+import type { Bid } from '../../../../_types/bid';
 
 export function BidList(props: { bids: Bid[]; bidsLoading: boolean; bidsError: string | null }) {
   const { bids, bidsLoading, bidsError } = props;
