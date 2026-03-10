@@ -1,7 +1,7 @@
 'use client';
 
 import { BidList } from './BidList';
-import { BidSubmit } from './BidSubmit';
+import { BidSubmit } from '../../../../_components/BidSubmit';
 import type { Bid } from '../../../../_types/bid';
 
 export function BidFormView(props: {

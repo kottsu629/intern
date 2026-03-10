@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { API_BASE } from '../../../_lib/api';
-import { generateRequestId } from '../../../_lib/requestId';
-import { parseAmount } from '../_components/bid/helpers';
+import { API_BASE } from '../_lib/api';
+import { generateRequestId } from '../_lib/requestId';
+import { parseAmount } from '../cars/[id]/_components/bid/helpers';
 
 export function useBidSubmit(props: { carId: number; onSubmitted: () => Promise<void> | void }) {
     const { carId, onSubmitted } = props;
