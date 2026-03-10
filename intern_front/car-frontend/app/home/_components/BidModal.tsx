@@ -5,6 +5,7 @@ import type { Car } from '../../_types/car';
 import { BidSubmit } from '../../_components/BidSubmit';
 import { useBidSubmit } from '../../_hooks/useBidSubmit';
 
+
 function BidModalForm({ cars }: { cars: Car[] }) {
   const [selectedCarId, setSelectedCarId] = useState<number | null>(null);
   const [carError, setCarError] = useState<string | null>(null);
@@ -27,6 +28,7 @@ function BidModalForm({ cars }: { cars: Car[] }) {
 
   return (
     <div className="space-y-5">
+
       <div className="flex flex-col gap-1.5">
         <label htmlFor="car-select" className="text-sm font-medium text-slate-700">
           入札する車両
@@ -54,6 +56,7 @@ function BidModalForm({ cars }: { cars: Car[] }) {
         )}
       </div>
 
+
       <BidSubmit
         bidSubmitting={bidSubmitting}
         bidSubmitError={bidSubmitError}
@@ -64,6 +67,7 @@ function BidModalForm({ cars }: { cars: Car[] }) {
     </div>
   );
 }
+
 
 
 type Props = { cars: Car[] };
@@ -99,8 +103,9 @@ export function BidModal({ cars }: Props) {
         >
           <path d="M12 5v14M5 12h14" />
         </svg>
-        クイック入札
+        入札する
       </button>
+
 
       {open && (
         <div
@@ -109,6 +114,7 @@ export function BidModal({ cars }: Props) {
           aria-hidden="true"
         />
       )}
+
 
       <aside
         role="dialog"
@@ -145,7 +151,13 @@ export function BidModal({ cars }: Props) {
         </div>
 
         <div className="flex-1 overflow-y-auto px-5 py-5">
-          <BidModalForm cars={cars} />
+          {cars.length === 0 ? (
+            <p className="text-sm text-slate-400 text-center py-8">
+              現在入札できる車両がありません
+            </p>
+          ) : (
+            <BidModalForm cars={cars} />
+          )}
         </div>
       </aside>
     </>
