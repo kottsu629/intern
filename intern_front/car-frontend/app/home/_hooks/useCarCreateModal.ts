@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { useCarSubmit } from './useCarCreateSubmit';
+import { useCarCreateSubmit } from './useCarCreateSubmit';
 import type { CarFormValues } from '../_components/CarCreateSubmit';
 
 export function useCarCreateModal() {
   const [open, setOpen] = useState(false);
 
-  const { carSubmitting, carSubmitError, carSubmitSuccess, resetKey, onSubmit } =
-    useCarSubmit({
+  const { carCreateSubmitting, carCreateSubmitError, carCreateSubmitSuccess, resetKey, onSubmit } =
+    useCarCreateSubmit({
       onSubmitted: () => {},
     });
 
@@ -22,9 +22,9 @@ export function useCarCreateModal() {
 
   return {
     open,
-    carSubmitting,
-    carSubmitError,
-    carSubmitSuccess,
+    carCreateSubmitting,
+    carCreateSubmitError,
+    carCreateSubmitSuccess,
     resetKey,
     handleOpen,
     handleClose,

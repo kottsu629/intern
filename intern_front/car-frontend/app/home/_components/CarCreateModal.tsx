@@ -6,9 +6,9 @@ import { useCarCreateModal } from '../_hooks/useCarCreateModal';
 export function CarCreateModal() {
   const {
     open,
-    carSubmitting,
-    carSubmitError,
-    carSubmitSuccess,
+    carCreateSubmitting,
+    carCreateSubmitError,
+    carCreateSubmitSuccess,
     resetKey,
     handleOpen,
     handleClose,
@@ -70,9 +70,9 @@ export function CarCreateModal() {
 
         <div className="flex-1 overflow-y-auto px-5 py-5">
           <CarSubmit
-            carSubmitting={carSubmitting}
-            carSubmitError={carSubmitError}
-            carSubmitSuccess={carSubmitSuccess}
+            carSubmitting={carCreateSubmitting}
+            carSubmitError={carCreateSubmitError}
+            carSubmitSuccess={carCreateSubmitSuccess}
             onSubmit={handleSubmit}
             resetKey={resetKey}
           />

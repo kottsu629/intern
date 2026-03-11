@@ -15,36 +15,36 @@ export type CarFormValues = {
   priceInput: string;
 };
 
-export function useCarSubmit({ onSubmitted }: UseCarSubmitOptions = {}) {
-  const [carSubmitting, setCarSubmitting] = useState(false);
-  const [carSubmitError, setCarSubmitError] = useState<string | null>(null);
-  const [carSubmitSuccess, setCarSubmitSuccess] = useState<string | null>(null);
+export function useCarCreateSubmit({ onSubmitted }: UseCarSubmitOptions = {}) {
+  const [carCreateSubmitting, setCarCreateSubmitting] = useState(false);
+  const [carCreateSubmitError, setCarCreateSubmitError] = useState<string | null>(null);
+  const [carCreateSubmitSuccess, setCarCreateSubmitSuccess] = useState<string | null>(null);
   const [resetKey, setResetKey] = useState(0);
   const router = useRouter();
 
   const onSubmit = async (v: CarFormValues, e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setCarSubmitError(null);
-    setCarSubmitSuccess(null);
+    setCarCreateSubmitError(null);
+    setCarCreateSubmitSuccess(null);
 
     const model = v.modelInput.trim();
     const year = parseInt(v.yearInput.trim(), 10);
     const price = parseAmount(v.priceInput.trim());
 
     if (!model) {
-      setCarSubmitError('車種を入力してください');
+      setCarCreateSubmitError('車種を入力してください');
       return;
     }
     if (isNaN(year) || year < 1900 || year > new Date().getFullYear() + 1) {
-      setCarSubmitError('正しい年式を入力してください');
+      setCarCreateSubmitError('正しい年式を入力してください');
       return;
     }
     if (isNaN(price) || price <= 0) {
-      setCarSubmitError('正しい価格を入力してください');
+      setCarCreateSubmitError('正しい価格を入力してください');
       return;
     }
 
-    setCarSubmitting(true);
+    setCarCreateSubmitting(true);
     try {
       const requestId = generateRequestId();
       const res = await fetch(`${API_BASE}/cars`, {
@@ -58,21 +58,21 @@ export function useCarSubmit({ onSubmitted }: UseCarSubmitOptions = {}) {
 
       if (!res.ok) {
         const text = await res.text();
-        setCarSubmitError(text || '登録に失敗しました。もう一度お試しください。');
+        setCarCreateSubmitError(text || '登録に失敗しました。もう一度お試しください。');
         return;
       }
 
       const data = await res.json();
-      setCarSubmitSuccess('車両を登録しました！');
+      setCarCreateSubmitSuccess('車両を登録しました！');
       setResetKey((k) => k + 1);
       router.refresh();
       onSubmitted?.(data.id);
     } catch {
-      setCarSubmitError('サーバーに接続できませんでした。ネットワーク環境をご確認ください。');
+      setCarCreateSubmitError('サーバーに接続できませんでした。ネットワーク環境をご確認ください。');
     } finally {
-      setCarSubmitting(false);
+      setCarCreateSubmitting(false);
     }
   };
 
-  return { carSubmitting, carSubmitError, carSubmitSuccess, resetKey, onSubmit };
+  return { carCreateSubmitting, carCreateSubmitError, carCreateSubmitSuccess, resetKey, onSubmit };
 }
