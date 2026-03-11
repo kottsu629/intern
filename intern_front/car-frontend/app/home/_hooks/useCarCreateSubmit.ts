@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { API_BASE } from '../../_lib/api';
 import { generateRequestId } from '../../_lib/requestId';
 import { useRouter } from 'next/navigation';
-
+import { parseAmount } from '../../_components/ParseAmount';
 type UseCarSubmitOptions = {
   onSubmitted?: (newCarId: number) => void;
 };
@@ -29,7 +29,7 @@ export function useCarSubmit({ onSubmitted }: UseCarSubmitOptions = {}) {
 
     const model = v.model.trim();
     const year = parseInt(v.yearInput.trim(), 10);
-    const price = parseInt(v.priceInput.trim().replace(/,/g, ''), 10);
+    const price = parseAmount(v.priceInput.trim());
 
     if (!model) {
       setCarSubmitError('車種を入力してください');
