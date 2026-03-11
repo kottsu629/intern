@@ -1,5 +1,3 @@
-
-
 package repos
 
 import (
@@ -13,7 +11,6 @@ import (
 type CarRepo struct{ db *sql.DB }
 
 func NewCarRepo(db *sql.DB) *CarRepo { return &CarRepo{db: db} }
-
 
 func (r *CarRepo) ExistsByID(ctx context.Context, id int64) (bool, error) {
 	row := r.db.QueryRowContext(ctx, `SELECT 1 FROM cars WHERE id = ? LIMIT 1`, id)
@@ -49,7 +46,6 @@ func (r *CarRepo) ListCars(ctx context.Context, query string, args ...any) ([]mo
 	return cars, nil
 }
 
-
 func (r *CarRepo) ListCarsWithFilter(ctx context.Context, hasMin bool, hasMax bool, min int, max int) ([]models.Car, error) {
 	baseSQL := `
 		SELECT id, model, price, year, created_at
@@ -73,9 +69,6 @@ func (r *CarRepo) ListCarsWithFilter(ctx context.Context, hasMin bool, hasMax bo
 	if len(whereConds) > 0 {
 		baseSQL += " WHERE " + strings.Join(whereConds, " AND ")
 	}
-
-	
-
 	return r.ListCars(ctx, baseSQL, args...)
 }
 

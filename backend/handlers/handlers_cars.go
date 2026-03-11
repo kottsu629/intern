@@ -78,10 +78,6 @@ func (h *CarsHandler) handleCreateCar(w http.ResponseWriter, r *http.Request) {
 
     id, err := h.service.CreateCar(r.Context(), req)
     if err != nil {
-        if err.Error() == "missing fields" {
-            http.Error(w, err.Error(), http.StatusBadRequest)
-            return
-        }
         http.Error(w, "failed to insert car", http.StatusInternalServerError)
         return
     }
@@ -90,7 +86,6 @@ func (h *CarsHandler) handleCreateCar(w http.ResponseWriter, r *http.Request) {
     w.WriteHeader(http.StatusCreated)
     _ = json.NewEncoder(w).Encode(map[string]int64{"id": id})
 }
-
 
 func (h *CarsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {

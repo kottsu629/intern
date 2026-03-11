@@ -7,7 +7,6 @@ import (
 	"time"
 	"app/models"
 	"app/repos"
-	"errors"
 	"strings"
 )
 
@@ -30,9 +29,6 @@ func (s *CarService) ListCars(ctx context.Context, hasMin bool, hasMax bool, min
 
 func (s *CarService) CreateCar(ctx context.Context, req models.CarCreateRequest) (int64, error) {
     req.Model = strings.TrimSpace(req.Model)
-    if req.Model == "" || req.Price <= 0 || req.Year <= 0 {
-        return 0, errors.New("missing fields")
-    }
 
     ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
     defer cancel()
