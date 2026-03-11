@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { API_BASE } from '../../_lib/api';
 import { generateRequestId } from '../../_lib/requestId';
+import { useRouter } from 'next/navigation';
 
 type UseCarSubmitOptions = {
   onSubmitted?: (newCarId: number) => void;
@@ -19,6 +20,7 @@ export function useCarSubmit({ onSubmitted }: UseCarSubmitOptions = {}) {
   const [carSubmitError, setCarSubmitError] = useState<string | null>(null);
   const [carSubmitSuccess, setCarSubmitSuccess] = useState<string | null>(null);
   const [resetKey, setResetKey] = useState(0);
+  const router = useRouter();
 
   const onSubmit = async (v: CarFormValues, e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -63,6 +65,7 @@ export function useCarSubmit({ onSubmitted }: UseCarSubmitOptions = {}) {
       const data = await res.json();
       setCarSubmitSuccess('車両を登録しました！');
       setResetKey((k) => k + 1);
+      router.refresh();
       onSubmitted?.(data.id);
     } catch {
       setCarSubmitError('サーバーに接続できませんでした。ネットワーク環境をご確認ください。');
