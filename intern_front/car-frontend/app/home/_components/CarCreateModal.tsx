@@ -1,9 +1,9 @@
 'use client';
 
-import { CarSubmit } from '../_components/CarSubmit';
-import { useCarModal } from '../_hooks/useCarModal';
+import { CarSubmit } from './CarCreateSubmit';
+import { useCarCreateModal } from '../_hooks/useCarCreateModal';
 
-export function CarModal() {
+export function CarCreateModal() {
   const {
     open,
     carSubmitting,
@@ -13,7 +13,7 @@ export function CarModal() {
     handleOpen,
     handleClose,
     handleSubmit,
-  } = useCarModal();
+  } = useCarCreateModal();
 
   return (
     <>
