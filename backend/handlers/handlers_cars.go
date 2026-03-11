@@ -12,6 +12,7 @@ import (
 	"time"
 	"app/repos"
 	"app/services"
+	"app/models"
 )
 
 type CarsHandler struct {
@@ -22,19 +23,6 @@ type CarsHandler struct {
 func NewCarsHandler(repo *repos.CarRepo, service *services.CarService) *CarsHandler {
 	return &CarsHandler{repo: repo, service: service}
 }
-
-
-func (h *CarsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case http.MethodGet:
-		h.handleListCars(w, r)
-	
-	default:
-		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
-	}
-}
-
-
 
 func (h *CarsHandler) handleListCars(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 3*time.Second)
@@ -81,6 +69,40 @@ func (h *CarsHandler) handleListCars(w http.ResponseWriter, r *http.Request) {
 }
 
 
+func (h *CarsHandler) handleCreateCar(w http.ResponseWriter, r *http.Request) {
+    var req models.CarCreateRequest
+    if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+        http.Error(w, "invalid JSON", http.StatusBadRequest)
+        return
+    }
+
+    id, err := h.service.CreateCar(r.Context(), req)
+    if err != nil {
+        if err.Error() == "missing fields" {
+            http.Error(w, err.Error(), http.StatusBadRequest)
+            return
+        }
+        http.Error(w, "failed to insert car", http.StatusInternalServerError)
+        return
+    }
+
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(http.StatusCreated)
+    _ = json.NewEncoder(w).Encode(map[string]int64{"id": id})
+}
+
+
+func (h *CarsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodGet:
+		h.handleListCars(w, r)
+	case http.MethodPost:          
+        h.handleCreateCar(w, r) 
+	default:
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+	}
+}
+
 func NewCarDetailHandler(repo *repos.CarRepo) http.HandlerFunc {
 
 
@@ -120,3 +142,5 @@ func NewCarDetailHandler(repo *repos.CarRepo) http.HandlerFunc {
 		_ = json.NewEncoder(w).Encode(c)
 	}
 }
+
+
