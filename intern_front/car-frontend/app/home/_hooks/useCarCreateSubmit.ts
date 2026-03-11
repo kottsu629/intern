@@ -10,7 +10,7 @@ type UseCarSubmitOptions = {
 };
 
 export type CarFormValues = {
-  model: string;
+  modelInput: string;
   yearInput: string;
   priceInput: string;
 };
@@ -27,7 +27,7 @@ export function useCarSubmit({ onSubmitted }: UseCarSubmitOptions = {}) {
     setCarSubmitError(null);
     setCarSubmitSuccess(null);
 
-    const model = v.model.trim();
+    const model = v.modelInput.trim();
     const year = parseInt(v.yearInput.trim(), 10);
     const price = parseAmount(v.priceInput.trim());
 
