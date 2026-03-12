@@ -1,4 +1,4 @@
-import type { Car } from '../../../_types/car';
+import type { Car } from "../../../_types/car";
 
 export function CarInfo({ car }: { car: Car }) {
   return (

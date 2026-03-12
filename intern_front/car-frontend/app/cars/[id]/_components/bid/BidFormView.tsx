@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { BidList } from './BidList';
-import { BidSubmit } from '../../../../_components/BidSubmit';
-import type { Bid } from '../../../../_types/bid';
+import { BidList } from "./BidList";
+import { BidSubmit } from "../../../../_components/BidSubmit";
+import type { Bid } from "../../../../_types/bid";
 
 export function BidFormView(props: {
-    bids: Bid[];
-    bidsLoading: boolean;
-    bidsError: string | null;
+  bids: Bid[];
+  bidsLoading: boolean;
+  bidsError: string | null;
 
-    bidSubmitting: boolean;
-    bidSubmitError: string | null;
-    bidSubmitSuccess: string | null;
-    resetKey: number;
-    onSubmit: (
+  bidSubmitting: boolean;
+  bidSubmitError: string | null;
+  bidSubmitSuccess: string | null;
+  resetKey: number;
+  onSubmit: (
     v: { bidder: string; amountInput: string },
-    e: React.FormEvent<HTMLFormElement>
-    ) => void;
+    e: React.FormEvent<HTMLFormElement>,
+  ) => void;
 }) {
-    const {
+  const {
     bids,
     bidsLoading,
     bidsError,
@@ -27,19 +27,19 @@ export function BidFormView(props: {
     bidSubmitSuccess,
     onSubmit,
     resetKey,
-    } = props;
+  } = props;
 
-    return (
+  return (
     <section className="mt-8 space-y-8">
-        <BidSubmit
+      <BidSubmit
         bidSubmitting={bidSubmitting}
         bidSubmitError={bidSubmitError}
         bidSubmitSuccess={bidSubmitSuccess}
         onSubmit={onSubmit}
         resetKey={resetKey}
-        />
+      />
 
-        <BidList bids={bids} bidsLoading={bidsLoading} bidsError={bidsError} />
+      <BidList bids={bids} bidsLoading={bidsLoading} bidsError={bidsError} />
     </section>
-    );
+  );
 }

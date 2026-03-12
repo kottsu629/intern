@@ -1,6 +1,10 @@
-import type { Bid } from '../../../../_types/bid';
+import type { Bid } from "../../../../_types/bid";
 
-export function BidList(props: { bids: Bid[]; bidsLoading: boolean; bidsError: string | null }) {
+export function BidList(props: {
+  bids: Bid[];
+  bidsLoading: boolean;
+  bidsError: string | null;
+}) {
   const { bids, bidsLoading, bidsError } = props;
 
   return (
@@ -20,7 +24,9 @@ export function BidList(props: { bids: Bid[]; bidsLoading: boolean; bidsError: s
       )}
 
       {!bidsLoading && !bidsError && bids.length === 0 && (
-        <p className="text-slate-600 text-sm">この車両への入札はまだありません。</p>
+        <p className="text-slate-600 text-sm">
+          この車両への入札はまだありません。
+        </p>
       )}
 
       {!bidsLoading && !bidsError && bids.length > 0 && (
@@ -36,11 +42,18 @@ export function BidList(props: { bids: Bid[]; bidsLoading: boolean; bidsError: s
             </thead>
             <tbody>
               {bids.map((bid, index) => (
-                <tr key={bid.id} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}>
+                <tr
+                  key={bid.id}
+                  className={index % 2 === 0 ? "bg-white" : "bg-slate-50/60"}
+                >
                   <td className="px-3 py-2">{bid.id}</td>
-                  <td className="px-3 py-2">{bid.amount.toLocaleString()} 円</td>
+                  <td className="px-3 py-2">
+                    {bid.amount.toLocaleString()} 円
+                  </td>
                   <td className="px-3 py-2">{bid.bidder}</td>
-                  <td className="px-3 py-2">{new Date(bid.created_at).toLocaleString('ja-JP')}</td>
+                  <td className="px-3 py-2">
+                    {new Date(bid.created_at).toLocaleString("ja-JP")}
+                  </td>
                 </tr>
               ))}
             </tbody>
