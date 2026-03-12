@@ -70,37 +70,57 @@ func (h *CarsHandler) handleListCars(w http.ResponseWriter, r *http.Request) {
 
 
 func (h *CarsHandler) handleCreateCar(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "application/json")
+
     var req models.CarCreateRequest
     if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-        http.Error(w, "invalid JSON", http.StatusBadRequest)
+        w.WriteHeader(http.StatusBadRequest)
+        _ = json.NewEncoder(w).Encode(map[string]string{
+            "error":   "invalid_request",
+            "message": "invalid JSON",
+        })
         return
     }
 
-	if strings.TrimSpace(req.Model) == "" {
-        http.Error(w, "model is required", http.StatusBadRequest)
+    if strings.TrimSpace(req.Model) == "" {
+        w.WriteHeader(http.StatusBadRequest)
+        _ = json.NewEncoder(w).Encode(map[string]string{
+            "error":   "validation_error",
+            "message": "model is required",
+        })
         return
     }
     if req.Price <= 0 {
-        http.Error(w, "price must be greater than 0", http.StatusBadRequest)
+        w.WriteHeader(http.StatusBadRequest)
+        _ = json.NewEncoder(w).Encode(map[string]string{
+            "error":   "validation_error",
+            "message": "price must be greater than 0",
+        })
         return
     }
     currentYear := time.Now().Year()
     if req.Year < 1886 || req.Year > currentYear+1 {
-        http.Error(w, "year is out of allowed range", http.StatusBadRequest)
+        w.WriteHeader(http.StatusBadRequest)
+        _ = json.NewEncoder(w).Encode(map[string]string{
+            "error":   "validation_error",
+            "message": "year is out of allowed range",
+        })
         return
     }
 
     id, err := h.service.CreateCar(r.Context(), req)
     if err != nil {
-        http.Error(w, "failed to insert car", http.StatusInternalServerError)
+        w.WriteHeader(http.StatusInternalServerError)
+        _ = json.NewEncoder(w).Encode(map[string]string{
+            "error":   "internal_error",
+            "message": "failed to insert car",
+        })
         return
     }
 
-    w.Header().Set("Content-Type", "application/json")
     w.WriteHeader(http.StatusCreated)
     _ = json.NewEncoder(w).Encode(map[string]int64{"id": id})
 }
-
 func (h *CarsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
