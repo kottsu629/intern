@@ -2,11 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-export type CarFormValues = {
-  modelInput: string;
-  yearInput: string;
-  priceInput: string;
-};
+import { type CarFormValues } from '../_hooks/useCarCreateSubmit';
 
 export function CarSubmit(props: {
   carSubmitting: boolean;

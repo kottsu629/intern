@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useCarCreateSubmit } from './useCarCreateSubmit';
-import type { CarFormValues } from '../_components/CarCreateSubmit';
+import { useCarCreateSubmit, type CarFormValues } from './useCarCreateSubmit';
 
 export function useCarCreateModal() {
   const [open, setOpen] = useState(false);
