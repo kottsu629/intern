@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { CarSubmit } from './CarCreateSubmit';
-import { useCarCreateModal } from '../_hooks/useCarCreateModal';
+import { CarSubmit } from "./CarCreateSubmit";
+import { useCarCreateModal } from "../_hooks/useCarCreateModal";
 
 export function CarCreateModal() {
   const {
@@ -29,7 +29,16 @@ export function CarCreateModal() {
         "
         aria-label="車両登録フォームを開く"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-4 h-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2.5}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <path d="M12 5v14M5 12h14" />
         </svg>
         車両登録
@@ -45,7 +54,7 @@ export function CarCreateModal() {
 
       <aside
         role="dialog"
-        aria-modal={open ? 'true' : undefined}
+        aria-modal={open ? "true" : undefined}
         aria-hidden={!open}
         inert={!open}
         aria-label="車両登録フォーム"
@@ -54,7 +63,7 @@ export function CarCreateModal() {
           bg-white shadow-2xl
           flex flex-col
           transition-transform duration-300 ease-out
-          ${open ? 'translate-x-0' : 'translate-x-full'}
+          ${open ? "translate-x-0" : "translate-x-full"}
         `}
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200">
@@ -64,7 +73,16 @@ export function CarCreateModal() {
             className="p-1.5 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
             aria-label="閉じる"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d="M18 6 6 18M6 6l12 12" />
             </svg>
           </button>

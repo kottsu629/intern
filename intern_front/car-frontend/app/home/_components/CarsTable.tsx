@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import type { Car } from '../../_types/car';
+import Link from "next/link";
+import type { Car } from "../../_types/car";
 
 export function CarsTable(props: { cars: Car[] }) {
   const { cars } = props;
@@ -9,16 +9,29 @@ export function CarsTable(props: { cars: Car[] }) {
       <table className="min-w-full table-auto text-sm">
         <thead className="bg-slate-100">
           <tr>
-            <th className="px-4 py-2 text-left text-slate-600 font-semibold">ID</th>
-            <th className="px-4 py-2 text-left text-slate-600 font-semibold">車種</th>
-            <th className="px-4 py-2 text-left text-slate-600 font-semibold">年式</th>
-            <th className="px-4 py-2 text-left text-slate-600 font-semibold">価格</th>
-            <th className="px-4 py-2 text-left text-slate-600 font-semibold">詳細</th>
+            <th className="px-4 py-2 text-left text-slate-600 font-semibold">
+              ID
+            </th>
+            <th className="px-4 py-2 text-left text-slate-600 font-semibold">
+              車種
+            </th>
+            <th className="px-4 py-2 text-left text-slate-600 font-semibold">
+              年式
+            </th>
+            <th className="px-4 py-2 text-left text-slate-600 font-semibold">
+              価格
+            </th>
+            <th className="px-4 py-2 text-left text-slate-600 font-semibold">
+              詳細
+            </th>
           </tr>
         </thead>
         <tbody>
           {cars.map((car, index) => (
-            <tr key={car.id} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}>
+            <tr
+              key={car.id}
+              className={index % 2 === 0 ? "bg-white" : "bg-slate-50/60"}
+            >
               <td className="px-4 py-2">{car.id}</td>
               <td className="px-4 py-2">{car.model}</td>
               <td className="px-4 py-2">{car.year}</td>

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import type { Car } from '../../_types/car';
-import { BidSubmit } from '../../_components/BidSubmit';
-import { useBidModal } from '../_hooks/useBidModal';
+import type { Car } from "../../_types/car";
+import { BidSubmit } from "../../_components/BidSubmit";
+import { useBidModal } from "../_hooks/useBidModal";
 
 type Props = { cars: Car[] };
 
@@ -35,7 +35,16 @@ export function BidModal({ cars }: Props) {
         "
         aria-label="入札フォームを開く"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-4 h-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2.5}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <path d="M12 5v14M5 12h14" />
         </svg>
         入札する
@@ -58,7 +67,7 @@ export function BidModal({ cars }: Props) {
           bg-white shadow-2xl
           flex flex-col
           transition-transform duration-300 ease-out
-          ${open ? 'translate-x-0' : 'translate-x-full'}
+          ${open ? "translate-x-0" : "translate-x-full"}
         `}
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200">
@@ -68,7 +77,16 @@ export function BidModal({ cars }: Props) {
             className="p-1.5 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
             aria-label="閉じる"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d="M18 6 6 18M6 6l12 12" />
             </svg>
           </button>
@@ -82,14 +100,19 @@ export function BidModal({ cars }: Props) {
           ) : (
             <div className="space-y-5">
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="car-select" className="text-sm font-medium text-slate-700">
+                <label
+                  htmlFor="car-select"
+                  className="text-sm font-medium text-slate-700"
+                >
                   入札する車両
                 </label>
                 <select
                   id="car-select"
-                  value={selectedCarId ?? ''}
+                  value={selectedCarId ?? ""}
                   onChange={(e) =>
-                    handleCarChange(e.target.value === '' ? null : Number(e.target.value))
+                    handleCarChange(
+                      e.target.value === "" ? null : Number(e.target.value),
+                    )
                   }
                   className="rounded-md border border-slate-300 px-3 py-2 text-sm bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 >

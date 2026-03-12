@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { parsePrice } from './useFilterPrice';
+import { useState } from "react";
+import { parsePrice } from "./useFilterPrice";
 
 export function useFilterApply() {
   const [appliedMin, setAppliedMin] = useState<number | null>(null);
@@ -10,17 +10,14 @@ export function useFilterApply() {
 
   const clearError = () => setError(null);
 
-  const apply = (
-    minInput: string,
-    maxInput: string,
-  ) => {
-    if (minInput.trim() !== '' && parsePrice(minInput) === null) {
-      setError('最低価格は数字で入力してください');
+  const apply = (minInput: string, maxInput: string) => {
+    if (minInput.trim() !== "" && parsePrice(minInput) === null) {
+      setError("最低価格は数字で入力してください");
       return;
     }
 
-    if (maxInput.trim() !== '' && parsePrice(maxInput) === null) {
-      setError('最高価格は数字で入力してください');
+    if (maxInput.trim() !== "" && parsePrice(maxInput) === null) {
+      setError("最高価格は数字で入力してください");
       return;
     }
 
@@ -28,7 +25,7 @@ export function useFilterApply() {
     const max = parsePrice(maxInput);
 
     if (min !== null && max !== null && min > max) {
-      setError('最低価格は最高価格以下にしてください');
+      setError("最低価格は最高価格以下にしてください");
       return;
     }
 

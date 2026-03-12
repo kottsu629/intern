@@ -87,7 +87,11 @@ export function FilterBar(props: Props) {
           </button>
         </div>
       </div>
-      {props.error && <p className="mt-2 text-xs text-red-600" aria-live="polite">{props.error}</p>}
+      {props.error && (
+        <p className="mt-2 text-xs text-red-600" aria-live="polite">
+          {props.error}
+        </p>
+      )}
     </section>
   );
 }

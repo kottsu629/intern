@@ -1,11 +1,18 @@
-'use client';
+"use client";
 
-import type { Car } from '../../_types/car';
-import { useFilterInput } from './useFilterInput';
-import { useFilterApply } from './useFilterApply';
+import type { Car } from "../../_types/car";
+import { useFilterInput } from "./useFilterInput";
+import { useFilterApply } from "./useFilterApply";
 
 export function useFilter(cars: Car[]) {
-  const { appliedMin, appliedMax, error, clearError, apply, reset: resetApply } = useFilterApply();
+  const {
+    appliedMin,
+    appliedMax,
+    error,
+    clearError,
+    apply,
+    reset: resetApply,
+  } = useFilterApply();
 
   const {
     minInput,
@@ -21,7 +28,7 @@ export function useFilter(cars: Car[]) {
 
   const filteredCars = cars
     .filter(
-      c =>
+      (c) =>
         (appliedMin === null || c.price >= appliedMin) &&
         (appliedMax === null || c.price <= appliedMax),
     )
