@@ -1,13 +1,13 @@
 package services
 
 import (
+	"app/models"
+	"app/repos"
 	"context"
 	"database/sql"
 	"errors"
-	"time"
-	"app/models"
-	"app/repos"
 	"strings"
+	"time"
 )
 
 type BidService struct {
