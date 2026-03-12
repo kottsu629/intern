@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { API_BASE } from '../../../_lib/api';
-import type { Bid } from '../../../_types/bid';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { API_BASE } from "../../../_lib/api";
+import type { Bid } from "../../../_types/bid";
 
 export function useBids(carId: number) {
   const [bids, setBids] = useState<Bid[]>([]);
@@ -12,14 +12,13 @@ export function useBids(carId: number) {
   const seq = useRef(0);
 
   const refetchBids = useCallback(async () => {
-
     const mySeq = ++seq.current;
     try {
       setBidsLoading(true);
       setBidsError(null);
 
       const res = await fetch(`${API_BASE}/bids?item_id=${carId}`);
-      if (!res.ok) throw new Error('API error');
+      if (!res.ok) throw new Error("API error");
 
       const raw = await res.json();
       const data: Bid[] = Array.isArray(raw) ? raw : [];
@@ -28,7 +27,7 @@ export function useBids(carId: number) {
       setBids(data);
     } catch (e) {
       console.error(e);
-      setBidsError('入札情報の取得に失敗しました（APIエラー）');
+      setBidsError("入札情報の取得に失敗しました（APIエラー）");
     } finally {
       if (mySeq === seq.current) setBidsLoading(false);
     }

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import { type CarFormValues } from '../_hooks/useCarCreateSubmit';
+import { type CarFormValues } from "../_hooks/useCarCreateSubmit";
 
 export function CarSubmit(props: {
   carSubmitting: boolean;
@@ -11,24 +11,33 @@ export function CarSubmit(props: {
   onSubmit: (v: CarFormValues, e: React.FormEvent<HTMLFormElement>) => void;
   resetKey?: number;
 }) {
-  const { carSubmitting, carSubmitError, carSubmitSuccess, onSubmit, resetKey } = props;
+  const {
+    carSubmitting,
+    carSubmitError,
+    carSubmitSuccess,
+    onSubmit,
+    resetKey,
+  } = props;
 
-  const [modelInput, setModelInput] = useState('');
-  const [yearInput, setYearInput] = useState('');
-  const [priceInput, setPriceInput] = useState('');
+  const [modelInput, setModelInput] = useState("");
+  const [yearInput, setYearInput] = useState("");
+  const [priceInput, setPriceInput] = useState("");
 
   useEffect(() => {
     if (resetKey === undefined) return;
-    setModelInput('');
-    setYearInput('');
-    setPriceInput('');
+    setModelInput("");
+    setYearInput("");
+    setPriceInput("");
   }, [resetKey]);
 
   return (
     <section className="border border-slate-200 rounded-lg p-4">
       <h2 className="text-xl font-semibold mb-3">車両情報を入力</h2>
 
-      <form onSubmit={(e) => onSubmit({ modelInput, yearInput, priceInput }, e)} className="space-y-4">
+      <form
+        onSubmit={(e) => onSubmit({ modelInput, yearInput, priceInput }, e)}
+        className="space-y-4"
+      >
         <div className="flex flex-col gap-1">
           <label htmlFor="car-model" className="text-sm text-slate-700">
             車種
@@ -71,7 +80,9 @@ export function CarSubmit(props: {
             className="rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             placeholder="例）2,500,000"
           />
-          <p className="text-xs text-slate-400">カンマ付きの数値でも入力できます（2,500,000 など）。</p>
+          <p className="text-xs text-slate-400">
+            カンマ付きの数値でも入力できます（2,500,000 など）。
+          </p>
         </div>
 
         {carSubmitError && (
@@ -91,7 +102,7 @@ export function CarSubmit(props: {
           disabled={carSubmitting}
           className="inline-flex items-center px-4 py-2 rounded-md bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
         >
-          {carSubmitting ? '登録中...' : '車両を登録'}
+          {carSubmitting ? "登録中..." : "車両を登録"}
         </button>
       </form>
     </section>

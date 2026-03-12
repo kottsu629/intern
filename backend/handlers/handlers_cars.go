@@ -1,8 +1,9 @@
-
-
 package handlers
 
 import (
+	"app/models"
+	"app/repos"
+	"app/services"
 	"context"
 	"database/sql"
 	"encoding/json"
@@ -10,9 +11,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"app/repos"
-	"app/services"
-	"app/models"
 )
 
 type CarsHandler struct {

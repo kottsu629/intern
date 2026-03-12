@@ -1,12 +1,10 @@
-
-
 package services
 
 import (
-	"context"
-	"time"
 	"app/models"
 	"app/repos"
+	"context"
+	"time"
 )
 
 type CarService struct {

@@ -1,4 +1,4 @@
-import { CarDetailContainer } from './_components/car-detail/CarDetailContainer';
+import { CarDetailContainer } from "./_components/car-detail/CarDetailContainer";
 
 type PageProps = {
   params: { id: string };
@@ -7,5 +7,5 @@ type PageProps = {
 export default async function Page({ params }: PageProps) {
   const { id } = await params;
 
-  return <CarDetailContainer id={id}  />;
+  return <CarDetailContainer id={id} />;
 }

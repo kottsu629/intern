@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export type BidFormValues = {
   bidder: string;
@@ -14,22 +14,31 @@ export function BidSubmit(props: {
   onSubmit: (v: BidFormValues, e: React.FormEvent<HTMLFormElement>) => void;
   resetKey?: number;
 }) {
-  const { bidSubmitting, bidSubmitError, bidSubmitSuccess, onSubmit, resetKey } = props;
+  const {
+    bidSubmitting,
+    bidSubmitError,
+    bidSubmitSuccess,
+    onSubmit,
+    resetKey,
+  } = props;
 
-  const [bidder, setBidder] = useState('');
-  const [amountInput, setAmountInput] = useState('');
+  const [bidder, setBidder] = useState("");
+  const [amountInput, setAmountInput] = useState("");
 
   useEffect(() => {
     if (resetKey === undefined) return;
-    setBidder('');
-    setAmountInput('');
+    setBidder("");
+    setAmountInput("");
   }, [resetKey]);
 
   return (
     <section className="border border-slate-200 rounded-lg p-4">
       <h2 className="text-xl font-semibold mb-3">この車に入札する</h2>
 
-      <form onSubmit={(e) => onSubmit({ bidder, amountInput }, e)} className="space-y-4">
+      <form
+        onSubmit={(e) => onSubmit({ bidder, amountInput }, e)}
+        className="space-y-4"
+      >
         <div className="flex flex-col gap-1">
           <label htmlFor="bidder" className="text-sm text-slate-700">
             入札者名
@@ -57,7 +66,9 @@ export function BidSubmit(props: {
             className="rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             placeholder="例）1,500,000"
           />
-          <p className="text-xs text-slate-400">カンマ付きの数値でも入力できます（1,500,000 など）。</p>
+          <p className="text-xs text-slate-400">
+            カンマ付きの数値でも入力できます（1,500,000 など）。
+          </p>
         </div>
 
         {bidSubmitError && (
@@ -77,7 +88,7 @@ export function BidSubmit(props: {
           disabled={bidSubmitting}
           className="inline-flex items-center px-4 py-2 rounded-md bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
         >
-          {bidSubmitting ? '送信中...' : '入札を送信'}
+          {bidSubmitting ? "送信中..." : "入札を送信"}
         </button>
       </form>
     </section>

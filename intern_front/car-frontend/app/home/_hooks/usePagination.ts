@@ -1,10 +1,16 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-export function usePagination<T>(items: T[], itemsPerPage: number, resetTrigger?: unknown) {
+export function usePagination<T>(
+  items: T[],
+  itemsPerPage: number,
+  resetTrigger?: unknown,
+) {
   const [currentPage, setCurrentPage] = useState(1);
-  useEffect(() => { setCurrentPage(1); }, [resetTrigger]);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [resetTrigger]);
 
   const totalPages = Math.max(1, Math.ceil(items.length / itemsPerPage));
 
