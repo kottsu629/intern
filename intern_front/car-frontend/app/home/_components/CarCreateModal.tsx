@@ -45,7 +45,9 @@ export function CarCreateModal() {
 
       <aside
         role="dialog"
-        aria-modal="true"
+        aria-modal={open ? 'true' : undefined}
+        aria-hidden={!open}
+        inert={!open}
         aria-label="車両登録フォーム"
         className={`
           fixed top-0 right-0 z-50 h-full w-full max-w-sm
