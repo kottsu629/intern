@@ -24,6 +24,9 @@ export function useCarCreateSubmit({ onSubmitted }: UseCarSubmitOptions = {}) {
 
   const onSubmit = async (v: CarFormValues, e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (carCreateSubmitting) {
+      return;
+    }
     setCarCreateSubmitError(null);
     setCarCreateSubmitSuccess(null);
 
