@@ -7,7 +7,6 @@ import (
 	"time"
 	"app/models"
 	"app/repos"
-	"strings"
 )
 
 type CarService struct {
@@ -28,7 +27,6 @@ func (s *CarService) ListCars(ctx context.Context, hasMin bool, hasMax bool, min
 }
 
 func (s *CarService) CreateCar(ctx context.Context, req models.CarCreateRequest) (int64, error) {
-    req.Model = strings.TrimSpace(req.Model)
 
     ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
     defer cancel()

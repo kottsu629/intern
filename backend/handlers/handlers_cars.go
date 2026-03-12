@@ -76,6 +76,20 @@ func (h *CarsHandler) handleCreateCar(w http.ResponseWriter, r *http.Request) {
         return
     }
 
+	if strings.TrimSpace(req.Model) == "" {
+        http.Error(w, "model is required", http.StatusBadRequest)
+        return
+    }
+    if req.Price <= 0 {
+        http.Error(w, "price must be greater than 0", http.StatusBadRequest)
+        return
+    }
+    currentYear := time.Now().Year()
+    if req.Year < 1886 || req.Year > currentYear+1 {
+        http.Error(w, "year is out of allowed range", http.StatusBadRequest)
+        return
+    }
+
     id, err := h.service.CreateCar(r.Context(), req)
     if err != nil {
         http.Error(w, "failed to insert car", http.StatusInternalServerError)
