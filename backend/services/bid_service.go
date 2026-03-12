@@ -7,6 +7,7 @@ import (
 	"time"
 	"app/models"
 	"app/repos"
+	"strings"
 )
 
 type BidService struct {
@@ -20,6 +21,13 @@ func NewBidService(db *sql.DB, bidRepo *repos.BidRepo, carRepo *repos.CarRepo) *
 }
 
 func (s *BidService) CreateBid(ctx context.Context, req models.BidRequest) error {
+	req.Bidder = strings.TrimSpace(req.Bidder)
+
+	req.RequestID = strings.TrimSpace(req.RequestID)
+
+	if req.CarID <= 0 || req.Amount <= 0 || req.Bidder == "" || req.RequestID == "" {
+		return errors.New("missing fields")
+	}
 
 	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
 	defer cancel()
