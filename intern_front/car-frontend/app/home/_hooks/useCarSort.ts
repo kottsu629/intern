@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { Car } from "../../_types/car";
 
-export type SortKey = "price" | "id";
+export type SortKey = "price" | "id"　| "year";
 export type SortOrder = "asc" | "desc";
 
 export function useCarSort(cars: Car[]) {

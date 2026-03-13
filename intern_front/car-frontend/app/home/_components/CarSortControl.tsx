@@ -10,6 +10,7 @@ type Props = {
 const SORT_KEYS: { value: SortKey; label: string }[] = [
   { value: "id", label: "ID" },
   { value: "price", label: "価格" },
+  { value: "year", label: "年式" },
 ];
 
 const SORT_ORDERS: { value: SortOrder; label: string; icon: string }[] = [
