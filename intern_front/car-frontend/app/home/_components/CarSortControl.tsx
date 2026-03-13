@@ -25,15 +25,17 @@ export function CarSortControl({
   onSortOrderChange,
 }: Props) {
   return (
-    <div className="flex justify-end items-center gap-2 text-sm mb-2">
-      <span className="text-slate-500 font-medium shrink-0">並び替え</span>
+    <div className="flex justify-end items-center gap-3 text-sm mb-2">
+      <span className="text-slate-500 text-xs font-medium shrink-0">
+        並び替え
+      </span>
 
-      <div className="flex items-center rounded-md border border-slate-200 overflow-hidden shadow-sm">
+      <div className="flex items-center rounded-md border border-slate-200 bg-white overflow-hidden shadow-sm divide-x divide-slate-200">
         {SORT_KEYS.map((key) => (
           <button
             key={key.value}
             onClick={() => onSortKeyChange(key.value)}
-            className={`px-3 py-1.5 font-medium transition-colors ${
+            className={`px-3 py-1.5 min-w-[70px] text-center font-medium transition-colors ${
               sortKey === key.value
                 ? "bg-indigo-600 text-white"
                 : "bg-white text-slate-600 hover:bg-slate-50"
@@ -44,13 +46,13 @@ export function CarSortControl({
         ))}
       </div>
 
-      <div className="flex items-center rounded-md border border-slate-200 overflow-hidden shadow-sm">
+      <div className="flex items-center rounded-md border border-slate-200 bg-white overflow-hidden shadow-sm divide-x divide-slate-200">
         {SORT_ORDERS.map((order) => (
           <button
             key={order.value}
             onClick={() => onSortOrderChange(order.value)}
             aria-label={order.label}
-            className={`px-3 py-1.5 font-medium transition-colors ${
+            className={`px-3 py-1.5 min-w-[70px] text-center font-medium transition-colors ${
               sortOrder === order.value
                 ? "bg-indigo-600 text-white"
                 : "bg-white text-slate-600 hover:bg-slate-50"
