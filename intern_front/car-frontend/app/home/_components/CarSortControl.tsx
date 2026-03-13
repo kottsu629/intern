@@ -1,5 +1,3 @@
-"use client";
-
 import type { SortKey, SortOrder } from "../_hooks/useCarSort";
 
 type Props = {
