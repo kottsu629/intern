@@ -1,6 +1,6 @@
 "use client";
 
-import { useState} from "react";
+import { useState } from "react";
 import type { Car } from "../../_types/car";
 
 export type SortKey = "price" | "id";
