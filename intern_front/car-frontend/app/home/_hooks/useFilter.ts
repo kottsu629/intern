@@ -26,13 +26,11 @@ export function useFilter(cars: Car[]) {
     resetInputs,
   } = useFilterInput(clearError);
 
-  const filteredCars = cars
-    .filter(
-      (c) =>
-        (appliedMin === null || c.price >= appliedMin) &&
-        (appliedMax === null || c.price <= appliedMax),
-    )
-    .sort((a, b) => a.id - b.id);
+  const filteredCars = cars.filter(
+    (c) =>
+      (appliedMin === null || c.price >= appliedMin) &&
+      (appliedMax === null || c.price <= appliedMax),
+  );
 
   return {
     minInput,
