@@ -1,5 +1,3 @@
-"use client";
-
 type Props = {
   modelInput: string;
   onChangeModelInput: (v: string) => void;
@@ -30,4 +28,3 @@ export function CarSearchBar(props: Props) {
     </section>
   );
 }
-
