@@ -10,6 +10,7 @@ import { BidModal } from "./_components/BidModal";
 import { CarCreateModal } from "./_components/CarCreateModal";
 import { CarSortControl } from "./_components/CarSortControl";
 import { useCarSort } from "./_hooks/useCarSort";
+import { CarSearchBar } from "./_components/CarSearchBar";
 
 type Props = { cars: Car[] };
 
@@ -22,7 +23,7 @@ export function HomePresentation({ cars }: Props) {
     handleSortOrderChange,
   } = useCarSort(cars);
   const filter = useFilter(sortedCars);
-  const resetKey = `${filter.appliedMin ?? "null"}-${filter.appliedMax ?? "null"}`;
+  const resetKey = `${filter.appliedMin ?? "null"}-${filter.appliedMax ?? "null"}-${filter.appliedModel ?? "null"}`;
   const itemsPerPage = 10;
   const { currentPage, setCurrentPage, totalPages, pagedItems } = usePagination(
     filter.filteredCars,
@@ -38,6 +39,11 @@ export function HomePresentation({ cars }: Props) {
         </h1>
         <BidModal cars={cars} />
         <CarCreateModal />
+        <CarSearchBar
+          modelInput={filter.modelInput}
+          onChangeModelInput={filter.onChangeModelInput}
+          onSearchModel={filter.onSearchModel}
+        />
         <FilterBar {...filter} />
         <CarSortControl
           sortKey={sortKey}
