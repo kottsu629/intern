@@ -1,5 +1,3 @@
-"use client";
-
 import type { Car } from "../../_types/car";
 import { useFilterInput } from "./useFilterInput";
 import { useFilterApply } from "./useFilterApply";
