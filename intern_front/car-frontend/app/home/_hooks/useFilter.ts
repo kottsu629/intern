@@ -58,7 +58,6 @@ export function useFilter(cars: Car[]) {
     onIncreaseMax,
     onChangeModelInput: (v: string) => {
       setModelInput(v);
-      clearError();
     },
     onSearch: () => apply(minInput, maxInput),
     onSearchModel: () => {
