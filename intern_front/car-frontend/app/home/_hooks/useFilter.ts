@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import type { Car } from "../../_types/car";
 import { useFilterInput } from "./useFilterInput";
 import { useFilterApply } from "./useFilterApply";
+import { useVehicleSearch } from "./useCarSearchBar";
 
 export function useFilter(cars: Car[]) {
   const {
@@ -27,11 +27,14 @@ export function useFilter(cars: Car[]) {
     resetInputs,
   } = useFilterInput(clearError);
 
-  const [modelInput, setModelInput] = useState("");
-  const [appliedModel, setAppliedModel] = useState<string | null>(null);
-
-  const normalizedModel =
-    appliedModel !== null ? appliedModel.toLowerCase() : null;
+  const {
+    modelInput,
+    appliedModel,
+    normalizedModel,
+    onChangeModelInput,
+    onSearchModel,
+    resetModel,
+  } = useVehicleSearch();
 
   const filteredCars = cars.filter((c) => {
     const withinMin = appliedMin === null || c.price >= appliedMin;
@@ -59,19 +62,13 @@ export function useFilter(cars: Car[]) {
     onIncreaseMin,
     onDecreaseMax,
     onIncreaseMax,
-    onChangeModelInput: (v: string) => {
-      setModelInput(v);
-    },
+    onChangeModelInput,
     onSearch: () => apply(minInput, maxInput),
-    onSearchModel: () => {
-      const trimmed = modelInput.trim();
-      setAppliedModel(trimmed === "" ? null : trimmed);
-    },
+    onSearchModel,
     onClear: () => {
       resetInputs();
       resetApply();
-      setModelInput("");
-      setAppliedModel(null);
+      resetModel();
     },
   };
 }
