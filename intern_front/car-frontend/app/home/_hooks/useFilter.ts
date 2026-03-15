@@ -30,13 +30,16 @@ export function useFilter(cars: Car[]) {
   const [modelInput, setModelInput] = useState("");
   const [appliedModel, setAppliedModel] = useState<string | null>(null);
 
+  const normalizedModel =
+    appliedModel !== null ? appliedModel.toLowerCase() : null;
+
   const filteredCars = cars.filter((c) => {
     const withinMin = appliedMin === null || c.price >= appliedMin;
     const withinMax = appliedMax === null || c.price <= appliedMax;
     const matchesModel =
-      appliedModel === null || appliedModel === ""
+      normalizedModel === null
         ? true
-        : c.model.toLowerCase().includes(appliedModel.toLowerCase());
+        : c.model.toLowerCase().includes(normalizedModel);
 
     return withinMin && withinMax && matchesModel;
   });
