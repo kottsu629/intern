@@ -23,7 +23,7 @@ type BidService struct {
 	carRepo CarRepoInterface
 }
 
-func NewBidService(db *sql.DB, bidRepo BidRepoInterface, carRepo CarRepoInterface) *BidService { // 同上
+func NewBidService(db *sql.DB, bidRepo BidRepoInterface, carRepo CarRepoInterface) *BidService {
 	return &BidService{db: db, bidRepo: bidRepo, carRepo: carRepo}
 }
 
