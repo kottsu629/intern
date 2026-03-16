@@ -1,8 +1,7 @@
-"use client";
-
 import type { Car } from "../../_types/car";
 import { useFilterInput } from "./useFilterInput";
 import { useFilterApply } from "./useFilterApply";
+import { useCarSearchBar } from "./useCarSearchBar";
 
 export function useFilter(cars: Car[]) {
   const {
@@ -26,17 +25,33 @@ export function useFilter(cars: Car[]) {
     resetInputs,
   } = useFilterInput(clearError);
 
-  const filteredCars = cars.filter(
-    (c) =>
-      (appliedMin === null || c.price >= appliedMin) &&
-      (appliedMax === null || c.price <= appliedMax),
-  );
+  const {
+    modelInput,
+    appliedModel,
+    normalizedModel,
+    onChangeModelInput,
+    onSearchModel,
+    resetModel,
+  } = useCarSearchBar();
+
+  const filteredCars = cars.filter((c) => {
+    const withinMin = appliedMin === null || c.price >= appliedMin;
+    const withinMax = appliedMax === null || c.price <= appliedMax;
+    const matchesModel =
+      normalizedModel === null
+        ? true
+        : c.model.toLowerCase().includes(normalizedModel);
+
+    return withinMin && withinMax && matchesModel;
+  });
 
   return {
     minInput,
     maxInput,
+    modelInput,
     appliedMin,
     appliedMax,
+    appliedModel,
     filteredCars,
     error,
     onChangeMinInput,
@@ -45,10 +60,13 @@ export function useFilter(cars: Car[]) {
     onIncreaseMin,
     onDecreaseMax,
     onIncreaseMax,
+    onChangeModelInput,
     onSearch: () => apply(minInput, maxInput),
+    onSearchModel,
     onClear: () => {
       resetInputs();
       resetApply();
+      resetModel();
     },
   };
 }
