@@ -91,17 +91,21 @@ http://localhost:3000
 
 ## テスト実行方法
 
-バックエンド（Go）で 1 本のユニットテストを用意しています。  
-ページネーション用の小さな関数 `calcTotalPages` が正しく動作することを確認しています。
-
-### 実行コマンド
+### 実行方法
 
 ```bash
-go test ./...
+cd backend
+go test ./services/... -v
 ```
-### テスト内容の概要
-- `calcTotalPages` が総件数と1ページあたり件数から正しいページ数を計算できることを確認
-- 端数切り上げのケース、0件の場合、1ページあたり件数が0以下の場合など複数パターンをチェック
+
+### 実行結果例
+
+```
+=== RUN   TestCreateBid_Success
+--- PASS: TestCreateBid_Success (0.00s)
+PASS
+ok      app/services    1.117s
+```
 
 
 
