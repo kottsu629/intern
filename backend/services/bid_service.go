@@ -2,7 +2,6 @@ package services
 
 import (
 	"app/models"
-	"app/repos"
 	"context"
 	"database/sql"
 	"errors"
@@ -10,13 +9,21 @@ import (
 	"time"
 )
 
-type BidService struct {
-	db      *sql.DB
-	bidRepo *repos.BidRepo
-	carRepo *repos.CarRepo
+type BidRepoInterface interface {
+	CreateBidTx(ctx context.Context, tx *sql.Tx, req models.BidRequest) error
 }
 
-func NewBidService(db *sql.DB, bidRepo *repos.BidRepo, carRepo *repos.CarRepo) *BidService {
+type CarRepoInterface interface {
+	ExistsByID(ctx context.Context, id int64) (bool, error)
+}
+
+type BidService struct {
+	db      *sql.DB
+	bidRepo BidRepoInterface 
+	carRepo CarRepoInterface 
+}
+
+func NewBidService(db *sql.DB, bidRepo BidRepoInterface, carRepo CarRepoInterface) *BidService { // 同上
 	return &BidService{db: db, bidRepo: bidRepo, carRepo: carRepo}
 }
 
@@ -31,7 +38,7 @@ func (s *BidService) CreateBid(ctx context.Context, req models.BidRequest) error
 
 	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
 	defer cancel()
-	
+
 	exists, err := s.carRepo.ExistsByID(ctx, req.CarID)
 	if err != nil {
 		return err
