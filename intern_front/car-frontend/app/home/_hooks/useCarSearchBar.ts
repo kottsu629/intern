@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export function useVehicleSearch() {
+export function useCarSearchBar() {
   const [modelInput, setModelInput] = useState("");
   const [appliedModel, setAppliedModel] = useState<string | null>(null);
 

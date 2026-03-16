@@ -1,7 +1,7 @@
 import type { Car } from "../../_types/car";
 import { useFilterInput } from "./useFilterInput";
 import { useFilterApply } from "./useFilterApply";
-import { useVehicleSearch } from "./useCarSearchBar";
+import { useCarSearchBar } from "./useCarSearchBar";
 
 export function useFilter(cars: Car[]) {
   const {
@@ -32,7 +32,7 @@ export function useFilter(cars: Car[]) {
     onChangeModelInput,
     onSearchModel,
     resetModel,
-  } = useVehicleSearch();
+  } = useCarSearchBar();
 
   const filteredCars = cars.filter((c) => {
     const withinMin = appliedMin === null || c.price >= appliedMin;
