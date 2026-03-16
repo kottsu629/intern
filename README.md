@@ -4,16 +4,13 @@
 
 - コミット : https://github.com/kottsu629/intern/commits/feature/add-readme-and-sql
 
-##  リポジトリURL
-- https://github.com/kottsu629/intern
+## リポジトリURL
 
+- https://github.com/kottsu629/intern
 
 ## デモ動画
 
 - BE
-
-
-
 
   DockerでMySQLとGoを起動
 
@@ -43,15 +40,13 @@
 
   https://drive.google.com/file/d/1RjK9VbQ3Rb8LW-rCzZitOH7IXfwTvhT0/view?usp=drive_link
 
-
-  
-
 ## 起動方法
 
 ### バックエンド
+
 - docker起動（MySQL+Go）
-  
-docker compose up -d 
+
+docker compose up -d
 
 - 以下にアクセスし、レスポンス(OK)が返れば起動成功です
 
@@ -67,16 +62,13 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:8080
 
 intern_task/intern_front/car-frontend ディレクトリに移動して以下を実行する
 
-```npm install```
-
-
-
+`npm install`
 
 - 起動
 
 intern_task/intern_front/car-frontend ディレクトリに移動して以下を実行する
 
-```npm run dev```
+`npm run dev`
 
 - 以下にアクセスしてレスポンスが返れば起動成功
 
@@ -107,17 +99,17 @@ PASS
 ok      app/services    1.117s
 ```
 
-
-
 ## 使用した主な SQL
 
 ### 1. 入札作成（POST /bids）
+
 ```sql
 INSERT INTO bids (car_id, amount, bidder, request_id)
 VALUES (?, ?, ?, ?);
 ```
 
 ### 2. 入札一覧取得（GET /bids?item_id=）
+
 ```sql
 SELECT id, car_id, amount, bidder, request_id, created_at
 FROM bids
@@ -126,6 +118,7 @@ ORDER BY created_at DESC;
 ```
 
 ### 3. 車両ごとの最高入札額（結合 + 集計）
+
 ```sql
 SELECT
   c.id       AS car_id,
@@ -135,18 +128,16 @@ FROM cars c
 LEFT JOIN bids b ON c.id = b.car_id
 GROUP BY c.id, c.model;
 ```
+
 ## EXPLAIN(2本）
 
 - `入札一覧取得`
-  
+
   <img width="1863" height="453" alt="image" src="https://github.com/user-attachments/assets/c63d43be-af62-4cd4-8a84-c934bb0afd03" />
 
 - `車両ごとの最高入札額`
 
   <img width="1917" height="547" alt="image" src="https://github.com/user-attachments/assets/1f75b24a-e12a-442a-8c23-7f451326f7ca" />
-
-
-
 
 ## DDL(cars/bids)
 
@@ -171,7 +162,6 @@ CREATE TABLE IF NOT EXISTS bids (
   UNIQUE KEY uk_request_id (request_id)
 );
 ```
-
 
 ## インデックス
 
@@ -208,7 +198,6 @@ Client Side Rendering（CSR）を採用。
 
 - コードの説明
 
-
 ### 採用したもの
 
 - Git コマンドの手順（ブランチ作成 → コミット → push の流れ）
@@ -229,12 +218,6 @@ Client Side Rendering（CSR）を採用。
 
 - 一部の高度な Git 操作の説明
 
-
 ### 懸念点（AIを使ったことで気をつけたこと）
 
 - AIの説明通りにやっても実際の GitHub 画面と違うことがあったので、自分で画面を確認しながら作業した
-
-
-
-
-
