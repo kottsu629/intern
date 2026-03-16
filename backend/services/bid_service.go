@@ -19,8 +19,8 @@ type CarRepoInterface interface {
 
 type BidService struct {
 	db      *sql.DB
-	bidRepo BidRepoInterface 
-	carRepo CarRepoInterface 
+	bidRepo BidRepoInterface
+	carRepo CarRepoInterface
 }
 
 func NewBidService(db *sql.DB, bidRepo BidRepoInterface, carRepo CarRepoInterface) *BidService { // 同上

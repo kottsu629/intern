@@ -44,7 +44,7 @@ func TestCreateBid_Success(t *testing.T) {
 	if err := svc.CreateBid(context.Background(), req); err != nil {
 		t.Errorf("予期しないエラーが発生しました: %v", err)
 	}
-	
+
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("トランザクションが正しく完了しませんでした: %v", err)
 	}
